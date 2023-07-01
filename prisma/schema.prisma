@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Movie {
+  id           Int         @id @default(autoincrement())
+  title        String
+  description  String
+  release_date DateTime
+  poster_url   String
+  age_rating   Int
+  ticket_price Int
+  screenings   Screening[] @relation("MovieScreening")
+  Ticket       Ticket[]
+}
+
+model Studio {
+  id         Int         @id @default(autoincrement())
+  name       String
+  seats      Seat[]
+  screenings Screening[]
+}
+
+model Seat {
+  id         Int      @id @default(autoincrement())
+  seatNumber Int
+  studio     Studio   @relation(fields: [studioId], references: [id])
+  studioId   Int
+  tickets    Ticket[]
+}
+
+model Ticket {
+  id          Int       @id @default(autoincrement())
+  seat        Seat      @relation(fields: [seatId], references: [id])
+  seatId      Int
+  movie       Movie     @relation(fields: [movieId], references: [id])
+  movieId     Int
+  user        User?     @relation(fields: [userId], references: [id])
+  userId      Int?
+  screening   Screening @relation(fields: [screeningId], references: [id])
+  screeningId Int
+  booking     Booking?  @relation(fields: [bookingId], references: [id])
+  bookingId   Int?
+}
+
+model User {
+  id       Int       @id @default(autoincrement())
+  name     String
+  username    String    @unique
+  password String
+  balance  Float     @default(0)
+  tickets  Ticket[]
+  bookings Booking[]
+}
+
+model Screening {
+  id         Int      @id @default(autoincrement())
+  start_time DateTime
+  movie      Movie    @relation("MovieScreening", fields: [movieId], references: [id])
+  movieId    Int
+  studio     Studio   @relation(fields: [studioId], references: [id])
+  studioId   Int
+  tickets    Ticket[]
+}
+
+model Booking {
+  id           Int      @id @default(autoincrement())
+  user         User     @relation(fields: [userId], references: [id])
+  userId       Int
+  tickets      Ticket[]
+  cancellation Boolean  @default(false)
+}

@@ -1,5 +1,8 @@
 "use client";
 
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 type SignInFormType = {
@@ -7,15 +10,34 @@ type SignInFormType = {
   password: string;
 };
 
-const UserAuthForm = () => {
+const SignInAuthForm = () => {
+  const router = useRouter()
   const [formDetails, setFormDetails] = useState<SignInFormType>({
     username: "",
     password: "",
   });
 
+  const { mutate: login} = useMutation({
+    mutationFn: async () => {
+      const payload = {
+        username: formDetails.username,
+        password: formDetails.password,
+      }
+      const { data } = await axios.post("/api/sign-in", payload)
+      return data as string
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      localStorage.setItem("token", data);
+      router.back()
+    },
+  })
+
   return (
-    <div >
-      <form className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4">
         <input
           type="text"
           placeholder="Username"
@@ -40,9 +62,9 @@ const UserAuthForm = () => {
           }
           className="input input-bordered"
         />
-      </form>
-    </div>
+        <button onClick={() => login()} className="btn btn-primary">Sign In</button>
+      </div>
   );
 };
 
-export default UserAuthForm;
+export default SignInAuthForm;

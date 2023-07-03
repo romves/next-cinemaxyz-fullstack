@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import Footer from "@/components/Footer";
+import Providers from "@/components/Providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,11 +21,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
+        <Providers>
+          <Navbar />
 
-        {authModal}
+          {authModal}
 
-        <div className="pt-20 min-h-screen max-w-screen">{children}</div>
+          <div className="min-h-screen max-w-screen">{children}</div>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

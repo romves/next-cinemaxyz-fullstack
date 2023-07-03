@@ -25,7 +25,7 @@ const page = async ({ params }: PageProps) => {
   }
 
   return (
-    <div className="container flex flex-col border">
+    <div className="container flex flex-col py-8">
       <div className="flex gap-4 ">
         
         <Image
@@ -40,6 +40,8 @@ const page = async ({ params }: PageProps) => {
           <span>Usia {movie.age_rating} tahun</span>
           <span>Release Date {movie.release_date.toLocaleDateString()}</span>
           <span>{movie.ticket_price}</span>
+
+          {/* TODO Check Session and Age before directing to next step */}
           <button className="btn btn-primary self-start">Beli Tiket</button>
         </div>
       </div>

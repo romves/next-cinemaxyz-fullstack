@@ -27,6 +27,7 @@ export default function RootLayout({
           {authModal}
 
           <div className="min-h-screen max-w-screen">{children}</div>
+          
           <Footer />
         </Providers>
       </body>

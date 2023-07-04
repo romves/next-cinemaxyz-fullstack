@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuthStore } from "@/store/authStore";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -11,28 +12,28 @@ type SignInFormType = {
 };
 
 const SignInAuthForm = () => {
+  const loginHandler = useAuthStore((state) => state.loginHandler)
   const router = useRouter()
   const [formDetails, setFormDetails] = useState<SignInFormType>({
     username: "",
     password: "",
   });
 
-  const { mutate: login} = useMutation({
+  const { mutate: signin} = useMutation({
     mutationFn: async () => {
       const payload = {
         username: formDetails.username,
         password: formDetails.password,
       }
       const { data } = await axios.post("/api/sign-in", payload)
-      return data as string
+      return data
+    },
+    onSuccess: (data) => {
+      loginHandler(data)
+      router.back()
     },
     onError: (err) => {
       console.log(err);
-    },
-    onSuccess: (data) => {
-      console.log(data);
-      localStorage.setItem("token", data);
-      router.back()
     },
   })
 
@@ -62,7 +63,7 @@ const SignInAuthForm = () => {
           }
           className="input input-bordered"
         />
-        <button onClick={() => login()} className="btn btn-primary">Sign In</button>
+        <button onClick={() => signin()} className="btn btn-primary">Sign In</button>
       </div>
   );
 };

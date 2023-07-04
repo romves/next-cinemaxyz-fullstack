@@ -22,8 +22,21 @@ export async function POST(request: Request) {
     const token = jwt.sign({ userId: user.id }, "secretnihbos", {
       expiresIn: "10h",
     });
-    return new Response(JSON.stringify(token));
+
+    const data = {
+      user: {
+        id: user.id,
+        fullname: user.fullname,
+        age: user.age,
+        balance: user.balance,
+        username,
+      },
+      token
+    };
+
+    return new Response(JSON.stringify(data));
   } catch (error) {
+    console.log(error);
     return new Response("Internal server error", { status: 500 });
   }
 }

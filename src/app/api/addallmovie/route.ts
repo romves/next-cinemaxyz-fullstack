@@ -2,10 +2,10 @@ import { db } from "@/lib/db";
 
 export async function POST(request: Request) {
   const arrayMovie = await request.json();
-  console.log(arrayMovie);
 
   try {
     for (const movie of arrayMovie) {
+      console.log(movie)
       const id = movie.id;
       const title = movie.title;
       const description = movie.description;
@@ -23,8 +23,9 @@ export async function POST(request: Request) {
           ticket_price: ticketPrice,
         },
       });
-      return new Response(JSON.stringify(newMovie));
+     
     }
+    return new Response(JSON.stringify("SUDAH ALL"));
   } catch (error) {
     console.log(error);
     return new Response("Internal server error", { status: 500 });

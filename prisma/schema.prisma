@@ -60,6 +60,7 @@ model User {
   balance  Float     @default(0)
   tickets  Ticket[]
   bookings Booking[]
+  role     String?
 }
 
 model Screening {

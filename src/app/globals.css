@@ -29,3 +29,23 @@ body {
 .container {
   @apply px-8 max-w-[1200px] mx-auto;
 }
+
+.cinema-layout {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Adjust the number of columns as needed */
+  gap: 10px; /* Adjust the gap between seats as needed */
+}
+
+.seat-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Adjust the number of columns as needed */
+}
+
+.seat {
+  height: 30px; /* Adjust seat height as needed */
+  background-color: #eaeaea; /* Set the seat color */
+}
+
+.occupied {
+  background-color: #ff0000; /* Set the color for occupied seats */
+}

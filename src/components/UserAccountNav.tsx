@@ -35,9 +35,12 @@ const UserAccountNav = () => {
           <summary className="m-1 btn btn-ghost">
             <div className="bg-white w-10 h-10 rounded-full"></div>
           </summary>
-          <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-28">
+          <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-36">
             <li>
-              <a>Item 1</a>
+              <a>Rp.{session.balance}</a>
+            </li>
+            <li>
+              <a>Order History</a>
             </li>
             <li>
               <button onClick={() => logout()} className="btn btn-sm">

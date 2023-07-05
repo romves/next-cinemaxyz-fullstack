@@ -8,7 +8,7 @@ export const useFetchSession = () => {
     queryFn: async () => {
       const sessionResponse = await axiosInstance.get("/user/me");
 
-      return sessionResponse;
+      return sessionResponse.data;
     },
     queryKey: ["session"],
     enabled: isAuthenticated,

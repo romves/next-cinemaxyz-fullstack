@@ -10,10 +10,8 @@ interface PageProps {
 }
 
 const Page = async ({ params }: PageProps) => {
-  
   const { slug } = params;
   const movieId = Number(slug);
- 
 
   if (Number.isNaN(movieId)) {
     return notFound(); // Handle the error when slug is not a number
@@ -21,13 +19,16 @@ const Page = async ({ params }: PageProps) => {
 
   const movie = await db.movie.findUnique({
     where: { id: movieId },
+    include: {
+      screenings: {
+        select: { start_time: true },
+      },
+    },
   });
 
   if (!movie) {
     return notFound();
   }
-
-  
 
   return (
     <div className="container flex flex-col py-8">
@@ -47,7 +48,7 @@ const Page = async ({ params }: PageProps) => {
 
           {/* TODO Check Session and Age before directing to next step */}
 
-          <TicketBookButton movie={movie}/>
+          <TicketBookButton movie={movie} />
         </div>
       </div>
     </div>

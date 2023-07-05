@@ -36,7 +36,6 @@ const SignUpAuthForm = () => {
       console.log(err);
     },
     onSuccess: (data) => {
-      console.log(data);
       router.back();
     },
   });

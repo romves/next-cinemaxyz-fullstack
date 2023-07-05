@@ -1,12 +1,16 @@
-import { useMutation } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { axiosInstance } from "./axios";
+import { useAuthStore } from "@/store/authStore";
 
-export const AuthSession = () => {
-  useEffect(() => {
-    const isLoggedIn = localStorage.getItem("token");
-    
-    if (isLoggedIn) {
-      console.log("loggedin");
-    }
-  }, []);
+export const useFetchSession = () => {
+  const { isAuthenticated } = useAuthStore((state) => state);
+  return useQuery({
+    queryFn: async () => {
+      const sessionResponse = await axiosInstance.get("/user/me");
+
+      return sessionResponse;
+    },
+    queryKey: ["session"],
+    enabled: isAuthenticated,
+  });
 };

@@ -1,7 +1,7 @@
+import TicketBookButton from "@/components/TicketBookButton";
 import { db } from "@/lib/db";
 import Image from "next/image";
-import { notFound } from "next/navigation";
-import React from "react";
+import { notFound, useRouter } from "next/navigation";
 
 interface PageProps {
   params: {
@@ -9,25 +9,29 @@ interface PageProps {
   };
 }
 
-const page = async ({ params }: PageProps) => {
+const Page = async ({ params }: PageProps) => {
+  
   const { slug } = params;
+  const movieId = Number(slug);
+ 
 
-  if (typeof Number(slug) !== "number" || isNaN(slug)) {
+  if (Number.isNaN(movieId)) {
     return notFound(); // Handle the error when slug is not a number
   }
 
   const movie = await db.movie.findUnique({
-    where: { id: Number(slug) },
+    where: { id: movieId },
   });
 
   if (!movie) {
     return notFound();
   }
 
+  
+
   return (
     <div className="container flex flex-col py-8">
       <div className="flex gap-4 ">
-        
         <Image
           src={movie.poster_url}
           alt={movie.title}
@@ -42,11 +46,12 @@ const page = async ({ params }: PageProps) => {
           <span>{movie.ticket_price}</span>
 
           {/* TODO Check Session and Age before directing to next step */}
-          <button className="btn btn-primary self-start">Beli Tiket</button>
+
+          <TicketBookButton movie={movie}/>
         </div>
       </div>
     </div>
   );
 };
 
-export default page;
+export default Page;

@@ -4,6 +4,7 @@ import Link from "next/link";
 import React from "react";
 
 const MovieList = async () => {
+  
   const movies = await db.movie.findMany();
   return (
     <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-w-[100vw] gap-3 overflow-auto">

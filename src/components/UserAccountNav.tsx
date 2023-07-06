@@ -11,17 +11,16 @@ const UserAccountNav = () => {
   const router = useRouter();
   const { logoutHandler, isAuthenticated } = useAuthStore((state) => state);
   const { data: session } = useFetchSession();
-  console.log(isAuthenticated)
 
   const { mutate: logout } = useMutation({
     mutationFn: async () => {
       const res = axiosInstance.post("/sign-out");
 
-      return res
+      return res;
     },
     onSuccess: () => {
       setTimeout(() => {
-        logoutHandler()
+        logoutHandler();
         window.location.reload();
         router.push("/");
       }, 1000);
@@ -32,15 +31,18 @@ const UserAccountNav = () => {
     <div>
       {session ? (
         <details className="dropdown dropdown-end">
-          <summary className="m-1 btn btn-ghost">
+          <summary className="p-0 btn btn-ghost">
             <div className="bg-white w-10 h-10 rounded-full"></div>
           </summary>
           <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-36">
             <li>
-              <a>Rp.{session.balance}</a>
+              <Link href={`/user/${session.username}`}>Profile</Link>
             </li>
             <li>
-              <a>Order History</a>
+              <Link href={"/user/topup"}>Rp.{session.balance}</Link>
+            </li>
+            <li>
+              <Link href={"/user/order-history"}>Order History</Link>
             </li>
             <li>
               <button onClick={() => logout()} className="btn btn-sm">

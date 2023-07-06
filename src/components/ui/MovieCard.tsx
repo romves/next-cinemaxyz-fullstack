@@ -7,8 +7,7 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
   return (
     <Link
       href={`/movie/${movie.id}`}
-    //   key={movie.id}
-      className="border max-w-[240px] h-[420px] rounded-lg"
+      className="border max-w-[240px] min-w-[240px] h-[420px] rounded-lg overflow-hidden"
     >
       <div className="h-[350px]  overflow-hidden">
         <Image
@@ -18,7 +17,7 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
           height={100}
         />
       </div>
-      <h3>{movie.title}</h3>
+      <h3 className="px-2">{movie.title}</h3>
     </Link>
   );
 };

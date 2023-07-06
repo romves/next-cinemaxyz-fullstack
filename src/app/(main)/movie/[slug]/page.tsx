@@ -32,8 +32,9 @@ const Page = async ({ params }: PageProps) => {
 
   return (
     <div className="container flex flex-col py-8">
-      <div className="flex gap-4 ">
+      <div className="flex flex-col items-center md:flex-row gap-4">
         <Image
+          className="rounded-lg "
           src={movie.poster_url}
           alt={movie.title}
           width={350}

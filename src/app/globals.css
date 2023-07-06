@@ -41,6 +41,10 @@ body {
   grid-template-columns: repeat(5, 1fr); /* Adjust the number of columns as needed */
 }
 
+.user-page-layout{
+  @apply border rounded-lg my-2 w-full h-fit min-h-[600px]
+}
+
 .seat {
   height: 30px; /* Adjust seat height as needed */
   background-color: #eaeaea; /* Set the seat color */

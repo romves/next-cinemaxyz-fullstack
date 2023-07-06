@@ -79,4 +79,5 @@ model Booking {
   userId       Int
   tickets      Ticket[]
   cancellation Boolean  @default(false)
+  checkoutDate DateTime @default(now())
 }

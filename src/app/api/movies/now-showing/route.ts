@@ -10,6 +10,7 @@ export async function GET(request: Request) {
           gte: currentDateTime,
         },
       },
+      distinct: ["movieId"],
       select: {
         start_time: true,
         studio: {

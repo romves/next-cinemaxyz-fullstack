@@ -1,7 +1,6 @@
-import SeatLayout from "@/components/SeatLayout";
+import BookDetail from "@/components/BookDetail";
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
-import React from "react";
 
 interface PageProps {
   params: {
@@ -14,7 +13,7 @@ const page = async ({ params }: PageProps) => {
   const movieId = Number(slug);
 
   if (Number.isNaN(movieId)) {
-    return notFound(); // Handle the error when slug is not a number
+    return notFound();
   }
 
   const movie = await db.movie.findUnique({
@@ -31,14 +30,7 @@ const page = async ({ params }: PageProps) => {
   return (
     <div className="container border">
       <h1>Select Studio</h1>
-      <select defaultValue="">
-        <option disabled value="" hidden>Select Studio</option>
-        {movie?.screenings.map((screening) => (
-          <option key={screening.id}>{screening.studio.name}</option>
-        ))}
-      </select>
-
-      <SeatLayout />
+      <BookDetail movie={movie!}/>
     </div>
   );
 };

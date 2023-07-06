@@ -4,7 +4,11 @@ import { useFetchSession } from "@/lib/auth";
 import type { Movie, Screening } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
-const TicketBookButton = ({ movie }: { movie: Movie & any}) => {
+interface TicketBookButtonProps extends Movie {
+  screenings: { start_time: Date }[];
+}
+
+const TicketBookButton = ({ movie }: { movie: TicketBookButtonProps }) => {
   const router = useRouter();
   const { data: session } = useFetchSession();
 
@@ -14,10 +18,9 @@ const TicketBookButton = ({ movie }: { movie: Movie & any}) => {
     }
 
     if (!movie.screenings || movie.screenings.length === 0) {
-      alert("movie not showing")
+      alert("movie not showing");
       return;
     }
-    
 
     if (session.age <= movie.age_rating) {
       alert("Belum cukup umur");

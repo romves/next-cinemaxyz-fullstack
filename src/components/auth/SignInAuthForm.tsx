@@ -26,7 +26,6 @@ const SignInAuthForm = () => {
         password: formDetails.password,
       };
       const { data } = await axios.post("/api/sign-in", payload);
-      console.log(data);
       return data;
     },
     onSuccess: () => {

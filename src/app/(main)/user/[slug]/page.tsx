@@ -1,5 +1,8 @@
 "use client";
 
+import UserInfoLayout from "@/components/UserInfoLayout";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
 import { useFetchSession } from "@/lib/auth";
 import { useState } from "react";
 
@@ -24,16 +27,16 @@ const Page = () => {
   };
 
   return (
-    <div className="user-page-layout py-12 px-8 flex flex-col gap-6">
+    <UserInfoLayout className="py-12 px-8 flex flex-col gap-6">
       <h2 className="font-bold text-2xl">My Profile</h2>
 
-      <div className="w-48 h-48 bg-white rounded-full"></div>
+      <div className="w-48 h-48 bg-white rounded-full border"></div>
 
       {!isEditing && (
         <div className="flex flex-col gap-4 ">
           <div>
             Username:{" "}
-            <input
+            <Input
               placeholder="Name"
               disabled
               className="input input-sm border-neutral-400"
@@ -43,7 +46,7 @@ const Page = () => {
           </div>
           <div>
             Name:{" "}
-            <input
+            <Input
               placeholder="Name"
               disabled
               className="input input-sm border-neutral-400"
@@ -53,7 +56,7 @@ const Page = () => {
           </div>
           <div>
             Age:{" "}
-            <input
+            <Input
               placeholder="Name"
               disabled
               className="input input-sm border-neutral-400"
@@ -61,12 +64,12 @@ const Page = () => {
               value={session?.age}
             />
           </div>
-          <button
+          <Button
             className="self-start mt-4 btn btn-sm border-neutral-400"
             onClick={handleEdit}
           >
             Edit Profile
-          </button>
+          </Button>
         </div>
       )}
 
@@ -74,7 +77,7 @@ const Page = () => {
         <div className="flex flex-col gap-4">
           <div>
             Username:{" "}
-            <input
+            <Input
               placeholder="Name"
               className="input input-sm border-neutral-400"
               type="text"
@@ -83,7 +86,7 @@ const Page = () => {
           </div>
           <div>
             Name:{" "}
-            <input
+            <Input
               placeholder="Name"
               className="input input-sm border-neutral-400"
               type="text"
@@ -92,22 +95,31 @@ const Page = () => {
           </div>
           <div>
             Age:{" "}
-            <input
+            <Input
               placeholder="Name"
               className="input input-sm border-neutral-400"
               type="text"
               value={session?.age}
             />
           </div>
-          <button
-            onClick={handleSave}
-            className="btn btn-sm self-start mt-4 border-neutral-400"
-          >
-            Save
-          </button>
+          <div className="space-x-2">
+            <Button
+              onClick={handleSave}
+              className="btn btn-sm self-start mt-4 border-neutral-400"
+            >
+              Save
+            </Button>
+            <Button
+              onClick={() => setIsEditing(false)}
+              className="btn btn-sm self-start mt-4 border-neutral-400"
+              variant="outline"
+            >
+              Cancel
+            </Button>
+          </div>
         </div>
       )}
-    </div>
+    </UserInfoLayout>
   );
 };
 

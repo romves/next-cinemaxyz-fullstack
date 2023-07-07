@@ -6,14 +6,18 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import SeatLayout from "./SeatLayout";
 import { useMutation } from "@tanstack/react-query";
-import { axiosInstance } from "@/lib/axios";
 import axios from "axios";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/Select";
+import { Button } from "./ui/Button";
+import { useToast } from "@/hooks/use-toast";
+import { SelectValue } from "@radix-ui/react-select";
 
 interface BookDetailProps extends Movie {
   screenings: (Screening & { studio: Studio })[];
 }
 
 const BookDetail = ({ movie }: { movie: BookDetailProps }) => {
+  const { toast } = useToast();
   const [selectedSeatsId, setSelectedSeatsId] = useState<number[]>([]);
   const [selectedScreeningId, setSelectedScreeningId] = useState<string>("");
   const { data: session } = useFetchSession();
@@ -40,8 +44,12 @@ const BookDetail = ({ movie }: { movie: BookDetailProps }) => {
   const handleCheckout = () => {
     if (selectedSeatsId.length === 0 || selectedScreeningId === "") {
       // Handle case when seats or screening are not selected
-      alert("ISI DULU");
-      return;
+
+      return toast({
+        title: "Something went wrong",
+        description: "Fill all the required fields to continue!",
+        variant: "destructive",
+      });
     }
 
     const total = selectedSeatsId.length * movie.ticket_price;
@@ -50,42 +58,56 @@ const BookDetail = ({ movie }: { movie: BookDetailProps }) => {
       return;
     }
     if (session.balance < total) {
-      alert("duit habis");
       router.push("/user/topup");
-      return;
+      return toast({
+        title: "Something went wrong",
+        description: "Insufficient balance!!!",
+        variant: "destructive",
+      });
     }
     checkout();
   };
 
   return (
-    <div>
-      <select
-        defaultValue=""
-        onChange={(e) => setSelectedScreeningId(e.target.value)}
-      >
-        <option disabled value="" hidden>
-          Select Studio
-        </option>
-        {movie?.screenings.map((screening) => (
-          <option key={screening.id} value={screening.id}>
-            {screening.studio.name}
-          </option>
-        ))}
-      </select>
+    <div className="flex flex-col gap-2 items-center lg:items-start lg:flex-row lg:justify-center text-sm">
       <SeatLayout
         setSelectedSeatsId={setSelectedSeatsId}
         selectedSeatsId={selectedSeatsId}
       />
 
-      <div>
-        <h2>Details</h2>
-        <p>Ticket Count: {selectedSeatsId.length}</p>
-        <p>Total Price: {selectedSeatsId.length * movie.ticket_price}</p>
+      <div className="max-w-[450px] border rounded-lg p-4 space-y-1 h-fit">
+        <Select
+          required
+          onValueChange={(value) => setSelectedScreeningId(value)}
+        >
+          <SelectTrigger className="w-fit">
+            <SelectValue placeholder="Select studio" />
+          </SelectTrigger>
+          <SelectContent className="w-fit">
+            {movie?.screenings.map((screening) => (
+              <SelectItem key={screening.id} value={`${screening.id}`}>
+                {screening.studio.name} |{" "}
+                {screening.start_time.toLocaleString()}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <div className="flex justify-between">
+          <p>Movie: </p>
+          <span>{movie.title}</span>
+        </div>
+        <div className="flex justify-between">
+          <p>Ticket Count: </p>
+          <span>{selectedSeatsId.length}</span>
+        </div>
+        <div className="flex justify-between font-bold">
+          <p>Total Price: </p>
+          <span>Rp.{selectedSeatsId.length * movie.ticket_price}</span>
+        </div>
+        <Button onClick={() => handleCheckout()} className="w-full">
+          Checkout
+        </Button>
       </div>
-
-      <button onClick={() => handleCheckout()} className="btn btn-primary">
-        Checkout
-      </button>
     </div>
   );
 };

@@ -3,6 +3,8 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import Footer from "@/components/Footer";
 import Providers from "@/components/Providers";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { Toaster } from "@/components/ui/Toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,9 +27,10 @@ export default function RootLayout({
           <Navbar />
 
           {authModal}
+          <Toaster />
 
           <div className=" max-w-screen">{children}</div>
-          
+
           <Footer />
         </Providers>
       </body>

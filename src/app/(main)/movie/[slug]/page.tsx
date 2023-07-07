@@ -45,7 +45,7 @@ const Page = async ({ params }: PageProps) => {
           <p>{movie.description}</p>
           <span>Usia {movie.age_rating} tahun</span>
           <span>Release Date {movie.release_date.toLocaleDateString()}</span>
-          <span>{movie.ticket_price}</span>
+          <span>Rp.{movie.ticket_price}</span>
 
           {/* TODO Check Session and Age before directing to next step */}
 

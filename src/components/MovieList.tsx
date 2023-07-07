@@ -7,7 +7,7 @@ import MovieCard from "./ui/MovieCard";
 const MovieList = async () => {
   const movies = await db.movie.findMany();
   return (
-    <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-fit gap-3 overflow-auto">
+    <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 w-fit gap-3 overflow-auto py-2">
       {movies.map((movie) => (
         <MovieCard key={movie.id} movie={movie} />
       ))}

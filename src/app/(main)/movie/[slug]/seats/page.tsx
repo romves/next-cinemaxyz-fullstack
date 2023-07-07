@@ -28,8 +28,8 @@ const page = async ({ params }: PageProps) => {
   });
 
   return (
-    <div className="container border">
-      <h1>Select Studio</h1>
+    <div className="container lg:border lg:shadow-md rounded-lg py-8 my-4  space-y-4">
+      <h2 className="font-bold text-3xl">Fill up the details</h2>
       <BookDetail movie={movie!}/>
     </div>
   );

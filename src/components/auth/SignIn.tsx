@@ -16,11 +16,11 @@ const SignIn = () => {
         {/* <UserAuthForm /> */}
         <SignInAuthForm />
 
-        <p className="px-8 text-center text-sm text-neutral-300">
+        <p className="px-8 text-center text-sm ">
           Dont have account ?{" "}
           <Link
             href="/sign-up"
-            className="hover:text-neutral-100 text-sm hover:underline underline-offset-4"
+            className=" text-sm hover:underline underline-offset-4"
           >
             Sign Up
           </Link>

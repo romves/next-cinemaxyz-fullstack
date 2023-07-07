@@ -1,18 +1,20 @@
-'use client'
+"use client";
 
 import { useRouter } from "next/navigation";
 import React from "react";
+import { Button } from "./ui/Button";
 
 const CloseModal = () => {
   const router = useRouter();
   return (
-    <button
-      className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+    <Button
+      variant="ghost"
+      className="absolute right-2 top-2 rounded-full"
       aria-label="close modal"
       onClick={() => router.back()}
     >
       ✕
-    </button>
+    </Button>
   );
 };
 

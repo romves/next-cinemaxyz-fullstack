@@ -1,11 +1,13 @@
 "use client";
 
+import UserInfoLayout from "@/components/UserInfoLayout";
+import { Button } from "@/components/ui/Button";
 import { useFetchSession } from "@/lib/auth";
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 
 const Page = () => {
   const { data: session } = useFetchSession();
-  const [balance, setBalance] = useState(session?.balance || 0);
+  const [balance, setBalance] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [amount, setAmount] = useState(0);
 
@@ -25,16 +27,20 @@ const Page = () => {
     setBalance(balance - amount); // Replace "amount" with the actual withdrawal amount
   };
 
+  useLayoutEffect(() => {
+    setBalance(session?.balance!)
+  }, [session?.balance])
+
   return (
-    <div className="user-page-layout flex flex-col gap-4 items-center justify-center ">
+    <UserInfoLayout className="flex flex-col gap-4 items-center justify-center ">
       <h3>Balance: ${balance}</h3>
       <div className="flex gap-4">
-        <button className="btn btn-primary" onClick={handleTopUp}>
+        <Button className="" onClick={handleTopUp}>
           Top-up
-        </button>
-        <button className="btn btn-primary" onClick={handleWithdraw}>
+        </Button>
+        <Button className="" onClick={handleWithdraw}>
           Withdraw
-        </button>
+        </Button>
       </div>
 
       <dialog className={`modal ${showModal ? "modal-open" : ""}`}>
@@ -47,19 +53,19 @@ const Page = () => {
             onChange={(e) => setAmount(Number(e.target.value))}
           />
           <div className="flex gap-4">
-            <button className="btn btn-outline btn-md" onClick={handleTopUp}>
+            <Button className="" onClick={handleTopUp}>
               Confirm
-            </button>
-            <button
-              className="btn btn-outline btn-md"
+            </Button>
+            <Button
+              className=""
               onClick={() => setShowModal(false)}
             >
               Cancel
-            </button>
+            </Button>
           </div>
         </div>
       </dialog>
-    </div>
+    </UserInfoLayout>
   );
 };
 

@@ -3,6 +3,7 @@
 import { useFetchSession } from "@/lib/auth";
 import type { Movie, Screening } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { Button } from "./ui/Button";
 
 interface TicketBookButtonProps extends Movie {
   screenings: { start_time: Date }[];
@@ -31,9 +32,9 @@ const TicketBookButton = ({ movie }: { movie: TicketBookButtonProps }) => {
   };
 
   return (
-    <button onClick={handleBook} className="btn btn-primary self-start">
+    <Button onClick={handleBook} className="btn btn-primary self-start">
       Beli Tiket
-    </button>
+    </Button>
   );
 };
 

@@ -5,6 +5,8 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Button } from "../ui/Button";
+import { Input } from "../ui/Input";
 
 type SignInFormType = {
   username: string;
@@ -39,7 +41,7 @@ const SignInAuthForm = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <input
+      <Input
         type="text"
         placeholder="Username"
         value={formDetails.username}
@@ -51,7 +53,7 @@ const SignInAuthForm = () => {
         }
         className="input input-bordered"
       />
-      <input
+      <Input
         type="password"
         placeholder="Password"
         value={formDetails.password}
@@ -63,9 +65,9 @@ const SignInAuthForm = () => {
         }
         className="input input-bordered"
       />
-      <button onClick={() => signin()} className="btn btn-primary">
+      <Button onClick={() => signin()} className="btn btn-primary">
         Sign In
-      </button>
+      </Button>
     </div>
   );
 };

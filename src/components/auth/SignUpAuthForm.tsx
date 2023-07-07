@@ -4,12 +4,14 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { Button } from "../ui/Button";
+import { Input } from "../ui/Input";
 
 type SignUpFormType = {
   username: string;
   password: string;
   fullname: string;
-  age: number | null;
+  age: number | undefined;
 };
 
 const SignUpAuthForm = () => {
@@ -42,7 +44,7 @@ const SignUpAuthForm = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      <input
+      <Input
         type="text"
         placeholder="Username"
         value={formDetails.username}
@@ -54,7 +56,7 @@ const SignUpAuthForm = () => {
         }
         className="input input-bordered"
       />
-      <input
+      <Input
         type="password"
         placeholder="Password"
         value={formDetails.password}
@@ -66,7 +68,7 @@ const SignUpAuthForm = () => {
         }
         className="input input-bordered"
       />
-      <input
+      <Input
         type="text"
         placeholder="Fullname"
         value={formDetails.fullname}
@@ -78,7 +80,7 @@ const SignUpAuthForm = () => {
         }
         className="input input-bordered"
       />
-      <input
+      <Input
         type="number"
         placeholder="Age"
         value={formDetails.age!}
@@ -90,9 +92,9 @@ const SignUpAuthForm = () => {
         }
         className="input input-bordered"
       />
-      <button onClick={() => signup()} className="btn btn-primary">
+      <Button onClick={() => signup()} className="btn btn-primary">
         Sign Up
-      </button>
+      </Button>
     </div>
   );
 };

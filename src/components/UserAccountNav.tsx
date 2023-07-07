@@ -6,10 +6,19 @@ import { useAuthStore } from "@/store/authStore";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Button, buttonVariants } from "./ui/Button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+} from "./ui/dropdown-menu";
+import { useLayoutEffect, useState } from "react";
 
 const UserAccountNav = () => {
   const router = useRouter();
-  const { logoutHandler, isAuthenticated } = useAuthStore((state) => state);
+  const { logoutHandler } = useAuthStore((state) => state);
+  const [balance, setBalance] = useState(0)
   const { data: session } = useFetchSession();
 
   const { mutate: logout } = useMutation({
@@ -21,38 +30,46 @@ const UserAccountNav = () => {
     onSuccess: () => {
       setTimeout(() => {
         logoutHandler();
-        window.location.reload();
         router.push("/");
+        window.location.reload();
       }, 1000);
     },
   });
 
+  useLayoutEffect(() => {
+    setBalance(session?.balance!)
+  }, [session?.balance])
+
   return (
     <div>
       {session ? (
-        <details className="dropdown dropdown-end">
-          <summary className="p-0 btn btn-ghost">
-            <div className="bg-white w-10 h-10 rounded-full"></div>
-          </summary>
-          <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-36">
-            <li>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="rounded-full">
+            <div className="bg-white border w-10 h-10 rounded-full" />
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent className="flex flex-col items-center justify-center">
+            <DropdownMenuItem>
               <Link href={`/user/${session.username}`}>Profile</Link>
-            </li>
-            <li>
-              <Link href={"/user/topup"}>Rp.{session.balance}</Link>
-            </li>
-            <li>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href={"/user/topup"}>Rp.{balance}</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
               <Link href={"/user/order-history"}>Order History</Link>
-            </li>
-            <li>
-              <button onClick={() => logout()} className="btn btn-sm">
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Button onClick={() => logout()} className="btn btn-sm">
                 Log Out
-              </button>
-            </li>
-          </ul>
-        </details>
+              </Button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       ) : (
-        <Link href="/sign-in" className="btn btn-primary">
+        <Link
+          href="/sign-in"
+          className={`${buttonVariants({ variant: "default" })}btn btn-primary`}
+        >
           Sign In
         </Link>
       )}

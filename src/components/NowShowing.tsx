@@ -5,6 +5,7 @@ import { Movie } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import MovieCard from "./ui/MovieCard";
+import { Loader2 } from 'lucide-react';
 
 const NowShowing = () => {
   const { data: movies, isLoading } = useQuery({
@@ -17,10 +18,10 @@ const NowShowing = () => {
   });
 
   if (isLoading) {
-    return <>Loading...</>;
+    return <Loader2 className="animate-spin"/>;
   }
   return (
-    <div className="flex max-w-[100vw] gap-3 overflow-auto">
+    <div className="flex max-w-[100vw] gap-3 overflow-auto py-2">
       {movies?.map((movie: Movie) => (
         <MovieCard key={movie.id} movie={movie} />
       ))}

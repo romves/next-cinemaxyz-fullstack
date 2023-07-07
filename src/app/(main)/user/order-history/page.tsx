@@ -25,7 +25,7 @@ const Page = async () => {
           key={order.id}
         >
           <h3>Order ID: {order.id}</h3>
-          <ul>
+          <ul className="space-y-2">
             {order.tickets.map((ticket) => (
               <div key={ticket.id} className="flex gap-2">
                 <div className="w-[95px] rounded-sm overflow-hidden">
@@ -41,10 +41,10 @@ const Page = async () => {
                   <p>At: {ticket.screening.studio.name}</p>
                   <p>Date: {ticket.screening.start_time.toLocaleString()}</p>
                   <p>Seat Number: {ticket.seat.seatNumber}</p>
-                  <Button className="mt-auto w-fit">Cancel Order</Button>
                 </li>
               </div>
             ))}
+            <Button className="mt-auto w-fit">Cancel Order</Button>
           </ul>
         </div>
       ))}

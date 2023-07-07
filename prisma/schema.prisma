@@ -30,10 +30,11 @@ model Studio {
 }
 
 model Seat {
-  id         Int      @id @default(autoincrement())
+  id         Int         @id @default(autoincrement())
   seatNumber Int
-  studio     Studio   @relation(fields: [studioId], references: [id])
+  studio     Studio      @relation(fields: [studioId], references: [id])
   studioId   Int
+  screenings Screening[] // Change the relation name to "screenings"
   tickets    Ticket[]
 }
 
@@ -70,6 +71,7 @@ model Screening {
   movieId    Int
   studio     Studio   @relation(fields: [studioId], references: [id])
   studioId   Int
+  seats      Seat[]
   tickets    Ticket[]
 }
 

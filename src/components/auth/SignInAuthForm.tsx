@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
+import { axiosInstance } from "@/lib/axios";
 
 type SignInFormType = {
   username: string;
@@ -27,7 +28,7 @@ const SignInAuthForm = () => {
         username: formDetails.username,
         password: formDetails.password,
       };
-      const { data } = await axios.post("/api/sign-in", payload);
+      const { data } = await axiosInstance.post("/sign-in", payload);
       return data;
     },
     onSuccess: () => {

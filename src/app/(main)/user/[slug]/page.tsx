@@ -10,10 +10,11 @@ const Page = () => {
   const { data: session } = useFetchSession();
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(session?.fullname || "");
-
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
+  const [profileDetails, setProfileDetails] = useState({
+    // username: "",
+    // name: "",
+    // age: 0,
+  })
 
   const handleSave = () => {
     // Implement the logic to save the updated user profile
@@ -41,7 +42,7 @@ const Page = () => {
               disabled
               className="input input-sm border-neutral-400"
               type="text"
-              value={session?.username}
+              value={session?.username || ""}
             />
           </div>
           <div>
@@ -51,7 +52,7 @@ const Page = () => {
               disabled
               className="input input-sm border-neutral-400"
               type="text"
-              value={session?.fullname}
+              value={session?.fullname || ""}
             />
           </div>
           <div>
@@ -61,12 +62,12 @@ const Page = () => {
               disabled
               className="input input-sm border-neutral-400"
               type="text"
-              value={session?.age}
+              value={session?.age || 0}
             />
           </div>
           <Button
             className="self-start mt-4 btn btn-sm border-neutral-400"
-            onClick={handleEdit}
+            onClick={() => setIsEditing(true)}
           >
             Edit Profile
           </Button>
@@ -81,7 +82,8 @@ const Page = () => {
               placeholder="Name"
               className="input input-sm border-neutral-400"
               type="text"
-              value={session?.username}
+              value={session?.username || ""}
+              onChange={(e) => setProfileDetails(e.target.value)}
             />
           </div>
           <div>
@@ -90,7 +92,8 @@ const Page = () => {
               placeholder="Name"
               className="input input-sm border-neutral-400"
               type="text"
-              value={session?.fullname}
+              value={session?.fullname || ""}
+              onChange={(e) => setProfileDetails(e.target.value)}
             />
           </div>
           <div>
@@ -99,7 +102,8 @@ const Page = () => {
               placeholder="Name"
               className="input input-sm border-neutral-400"
               type="text"
-              value={session?.age}
+              value={session?.age || 0}
+              onChange={(e) => setProfileDetails(e.target.value)}
             />
           </div>
           <div className="space-x-2">

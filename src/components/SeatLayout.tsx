@@ -1,23 +1,40 @@
 "use client";
 
 import { useToast } from "@/hooks/use-toast";
-import { useTicketBookingStore } from "@/store/authStore";
-import { Dispatch, SetStateAction } from "react";
+import { axiosInstance } from "@/lib/axios";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface SeatLayoutProps {
+  screeningId: string;
   selectedSeatsId: number[];
   setSelectedSeatsId: Dispatch<SetStateAction<number[]>>;
 }
 
 const SeatLayout = ({
+  screeningId,
   selectedSeatsId,
   setSelectedSeatsId,
 }: SeatLayoutProps) => {
+  const [bookedSeats, setBookedSeats] = useState<number[]>([]);
   const { toast } = useToast();
-  const { availableSeatsId } = useTicketBookingStore((state) => state);
+
+  useEffect(() => {
+    if (screeningId) {
+      const getAvailableSeat = async () => {
+        const response = await axiosInstance.post("/booking/available-seats", {
+          screeningId: Number(screeningId),
+        });
+
+        setBookedSeats(response.data);
+      };
+      getAvailableSeat();
+    }
+  }, [screeningId]);
+
+  if (!screeningId) return <></>;
 
   const handleSeatClick = (seatIndex: number) => {
-    if (availableSeatsId.includes(seatIndex)) {
+    if (bookedSeats.includes(seatIndex)) {
       return; // Seat is already booked, do not allow selection
     }
     if (selectedSeatsId.includes(seatIndex)) {
@@ -26,7 +43,7 @@ const SeatLayout = ({
     }
     if (selectedSeatsId.length >= 6) {
       return toast({
-        title: "Something went wrong",
+        title: "Error",
         description: "Maximum 6 seats can be selected.",
         variant: "destructive",
       });
@@ -44,17 +61,17 @@ const SeatLayout = ({
           <div
             key={index}
             className={`${
-              availableSeatsId.includes(index)
+              bookedSeats.includes(index)
                 ? "cursor-not-allowed"
                 : "cursor-pointer"
             } border shadow-sm sm:h-12 sm:w-12 text-xs sm:text-base w-7 h-7 rounded-lg flex items-center justify-center ${
-              availableSeatsId.includes(index) ? "sold" : "hover:bg-neutral-200"
+              bookedSeats.includes(index) ? "sold" : "hover:bg-neutral-200"
             } ${
               selectedSeatsId.includes(index) ? "bg-blue-500 text-white" : ""
             }`}
             onClick={() => handleSeatClick(index)}
           >
-            {availableSeatsId.includes(index) ? "sold" : index + 1}
+            {bookedSeats.includes(index) ? "sold" : index + 1}
           </div>
         ))}
       </div>

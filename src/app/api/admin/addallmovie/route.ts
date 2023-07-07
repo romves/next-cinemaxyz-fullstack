@@ -5,7 +5,6 @@ export async function POST(request: Request) {
 
   try {
     for (const movie of arrayMovie) {
-      console.log(movie)
       const id = movie.id;
       const title = movie.title;
       const description = movie.description;
@@ -27,7 +26,6 @@ export async function POST(request: Request) {
     }
     return new Response(JSON.stringify("SUDAH ALL"));
   } catch (error) {
-    console.log(error);
     return new Response("Internal server error", { status: 500 });
   }
 }

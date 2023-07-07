@@ -8,6 +8,7 @@ import { useState } from "react";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { axiosInstance } from "@/lib/axios";
+import { useToast } from "@/hooks/use-toast";
 
 type SignInFormType = {
   username: string;
@@ -15,6 +16,7 @@ type SignInFormType = {
 };
 
 const SignInAuthForm = () => {
+  const { toast } = useToast();
   const { loginHandler } = useAuthStore((state) => state);
   const router = useRouter();
   const [formDetails, setFormDetails] = useState<SignInFormType>({
@@ -32,11 +34,19 @@ const SignInAuthForm = () => {
       return data;
     },
     onSuccess: () => {
-      loginHandler()
+      loginHandler();
+      toast({
+        title: "Success",
+        description: "Login success",
+      });
       router.back();
     },
     onError: (err) => {
-      console.log(err);
+      toast({
+        title: "Error",
+        description: "Login error please try again later",
+        variant: "destructive"
+      });
     },
   });
 

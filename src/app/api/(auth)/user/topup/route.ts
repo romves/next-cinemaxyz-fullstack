@@ -20,7 +20,6 @@ export async function POST(request: Request) {
 
     return new Response("Topup success");
   } catch (error) {
-    console.log(error)
     return new Response("Internal server error", { status: 500 });
   }
 }

@@ -4,7 +4,6 @@ import { jwtVerify } from "jose";
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
-  console.log(token)
   const jwtSecret = process.env.JWT_SECRET;
 
   if (!token) {
@@ -27,7 +26,6 @@ export async function middleware(request: NextRequest) {
     })
 
   } catch (error) {
-    console.log(error);
     return new Response("Unauthorized", { status: 401 });
   }
 }

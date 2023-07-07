@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { axiosInstance } from "@/lib/axios";
+import { useToast } from "@/hooks/use-toast";
 
 type SignUpFormType = {
   username: string;
@@ -16,6 +17,7 @@ type SignUpFormType = {
 };
 
 const SignUpAuthForm = () => {
+  const { toast } = useToast();
   const router = useRouter();
   const [formDetails, setFormDetails] = useState<SignUpFormType>({
     username: "",
@@ -35,11 +37,19 @@ const SignUpAuthForm = () => {
       const { data } = await axiosInstance.post("/sign-up", payload);
       return data as string;
     },
-    onError: (err) => {
-      console.log(err);
-    },
     onSuccess: (data) => {
+      toast({
+        title: "Success",
+        description: "Signup success"
+      })
       router.back();
+    },
+    onError: (err) => {
+      toast({
+        title: "Error",
+        description: "Signup error please try again later",
+        variant: "destructive"
+      })
     },
   });
 

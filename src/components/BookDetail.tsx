@@ -34,6 +34,8 @@ const BookDetail = ({ movie }: { movie: BookDetailProps }) => {
       const { data } = await axiosInstance.post("/booking", payload);
     },
     onSuccess: () => {
+      
+      // router.push('/user/order-history')
       return toast({
         title: "Success!",
         description: "Checkout Success"

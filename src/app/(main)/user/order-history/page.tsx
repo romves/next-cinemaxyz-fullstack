@@ -1,30 +1,58 @@
+"use client";
+
 import UserInfoLayout from "@/components/UserInfoLayout";
 import { Button } from "@/components/ui/Button";
-import { db } from "@/lib/db";
+import { axiosInstance } from "@/lib/axios";
+import {
+  Booking,
+  Movie,
+  Screening,
+  Seat,
+  Studio,
+  Ticket,
+} from "@prisma/client";
+import { useQuery } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 import Image from "next/image";
-import React from "react";
 
-const Page = async () => {
-  const orderHistory = await db.booking.findMany({
-    include: {
-      tickets: {
-        include: {
-          seat: true,
-          movie: true,
-          screening: { include: { studio: true } },
-        },
-      },
+interface ScreeningType extends Screening {
+  studio: Studio;
+}
+
+interface TicketType extends Ticket {
+  movie: Movie;
+  screening: ScreeningType;
+  seat: Seat;
+}
+
+interface OrderHistoryType extends Booking {
+  tickets: TicketType[];
+}
+
+const Page = () => {
+  const { data: orderHistory, isLoading } = useQuery({
+    queryFn: async () => {
+      const response = await axiosInstance.get("/user/order-history");
+
+      return response.data as OrderHistoryType[];
     },
+    queryKey: ["order-history"],
   });
+
+  if (isLoading) return <Loader2 className="animate-spin" />;
+
+  if (orderHistory == undefined) return <div>No Orders</div>;
 
   return (
     <UserInfoLayout className=" flex flex-col gap-2 p-2">
-      {orderHistory.map((order) => (
+      {orderHistory?.map((order) => (
         <div
           className="flex flex-col border h-fit p-2 rounded-lg"
           key={order.id}
         >
-          <h3>Order ID: {order.id}</h3>
+          <h3 className="font-bold">
+            Order ID: {order.id} | {order.checkoutDate.toLocaleString()}
+          </h3>
           <ul className="space-y-2">
             {order.tickets.map((ticket) => (
               <div key={ticket.id} className="flex gap-2">

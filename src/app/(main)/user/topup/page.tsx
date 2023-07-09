@@ -63,7 +63,7 @@ const Page = () => {
 
   return (
     <UserInfoLayout className="flex flex-col gap-4 items-center justify-center ">
-      <h3>Balance: ${balance}</h3>
+      <h3>Balance: Rp.{balance}</h3>
       <div className="flex gap-4">
         <Button className="" onClick={() => openModal("topup")}>
           Top-up

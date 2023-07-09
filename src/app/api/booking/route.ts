@@ -38,9 +38,6 @@ export async function POST(request: Request) {
     const user = await db.user.findUnique({
       where: { id: parseInt(userId) },
     });
-    const existingSeats = await db.seat.findMany({
-      where: { seatNumber: { in: seatNumberArray } },
-    });
 
     if (!user) {
       return new Response("User not found", { status: 404 });
@@ -48,6 +45,24 @@ export async function POST(request: Request) {
     if (!movie || !screening) {
       return new Response("Movie or Screening not found", { status: 404 });
     }
+
+    const existingSeats = await db.seat.findMany({
+      where: {
+        tickets: {
+          some: {
+            screening: {
+              id: parseInt(screeningId),
+            },
+          },
+        },
+        seatNumber: {
+          in: seatNumberArray,
+        },
+      },
+      select: {
+        seatNumber: true,
+      },
+    });
 
     if (user.age < movie.age_rating) {
       return new Response("Underaged", { status: 400 });
@@ -85,16 +100,17 @@ export async function POST(request: Request) {
           })),
         },
       },
-      include: { tickets: { include: { seat: true, movie: true, screening: true  } } },
+      include: {
+        tickets: { include: { seat: true, movie: true, screening: true } },
+      },
     });
 
     await db.user.update({
       where: { id: user.id },
       data: { balance: user.balance - totalPrice },
     });
-
     return new Response(JSON.stringify(booking), { status: 200 });
   } catch (error) {
-    return new Response(JSON.stringify(error));
+    return new Response("Internal server error", { status: 500 });
   }
 }

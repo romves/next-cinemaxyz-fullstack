@@ -20,8 +20,6 @@ export async function GET(request: Request) {
       },
     });
 
-    console.log(userId)
-    console.log(orderHistory)
     return new Response(JSON.stringify(orderHistory));
   } catch (error) {
     return new Response("Internal server error", { status: 500 });

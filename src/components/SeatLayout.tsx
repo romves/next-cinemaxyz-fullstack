@@ -2,6 +2,7 @@
 
 import { useToast } from "@/hooks/use-toast";
 import { axiosInstance } from "@/lib/axios";
+import { Loader2 } from "lucide-react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface SeatLayoutProps {
@@ -16,16 +17,19 @@ const SeatLayout = ({
   setSelectedSeatsId,
 }: SeatLayoutProps) => {
   const [bookedSeats, setBookedSeats] = useState<number[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
     if (screeningId) {
       const getAvailableSeat = async () => {
+        setIsLoading(true);
         const response = await axiosInstance.post("/booking/available-seats", {
           screeningId: Number(screeningId),
         });
 
         setBookedSeats(response.data);
+        setIsLoading(false);
       };
       getAvailableSeat();
     }
@@ -55,26 +59,34 @@ const SeatLayout = ({
 
   return (
     <div className="border w-fit p-2 rounded-lg flex flex-col items-center gap-2">
-      <h3 className=" border w-[300px] text-center">Screen</h3>
-      <div className="grid grid-cols-10 sm:gap-2 gap-1 p-2 rounded-lg">
-        {Array.from({ length: 64 }).map((_, index) => (
-          <div
-            key={index}
-            className={`${
-              bookedSeats.includes(index)
-                ? "cursor-not-allowed"
-                : "cursor-pointer"
-            } border shadow-sm sm:h-12 sm:w-12 text-xs sm:text-base w-7 h-7 rounded-lg flex items-center justify-center ${
-              bookedSeats.includes(index) ? "sold" : "hover:bg-neutral-200"
-            } ${
-              selectedSeatsId.includes(index) ? "bg-blue-500 text-white" : ""
-            }`}
-            onClick={() => handleSeatClick(index)}
-          >
-            {bookedSeats.includes(index) ? "sold" : index + 1}
+      {isLoading ? (
+        <Loader2 className="animate-spin" />
+      ) : (
+        <>
+          <h3 className=" border w-[300px] text-center">Screen</h3>
+          <div className="grid grid-cols-10 sm:gap-2 gap-1 p-2 rounded-lg">
+            {Array.from({ length: 64 }).map((_, index) => (
+              <div
+                key={index}
+                className={`${
+                  bookedSeats.includes(index)
+                    ? "cursor-not-allowed"
+                    : "cursor-pointer"
+                } border shadow-sm sm:h-12 sm:w-12 text-xs sm:text-base w-7 h-7 rounded-lg flex items-center justify-center ${
+                  bookedSeats.includes(index) ? "sold" : "hover:bg-neutral-200"
+                } ${
+                  selectedSeatsId.includes(index)
+                    ? "bg-blue-500 text-white"
+                    : ""
+                }`}
+                onClick={() => handleSeatClick(index)}
+              >
+                {bookedSeats.includes(index) ? "sold" : index + 1}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
     </div>
   );
 };

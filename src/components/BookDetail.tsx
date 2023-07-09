@@ -1,17 +1,18 @@
 "use client";
 
+import { useToast } from "@/hooks/use-toast";
 import { useFetchSession } from "@/lib/auth";
+import { axiosInstance } from "@/lib/axios";
 import { Movie, Screening, Studio } from "@prisma/client";
+import { SelectValue } from "@radix-ui/react-select";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import SeatLayout from "./SeatLayout";
-import { useMutation } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
-import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/Select";
 import { Button } from "./ui/Button";
-import { useToast } from "@/hooks/use-toast";
-import { SelectValue } from "@radix-ui/react-select";
-import { axiosInstance } from "@/lib/axios";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "./ui/Select";
+import { Loader2 } from "lucide-react";
 
 interface BookDetailProps extends Movie {
   screenings: (Screening & { studio: Studio })[];
@@ -24,7 +25,7 @@ const BookDetail = ({ movie }: { movie: BookDetailProps }) => {
   const { data: session } = useFetchSession();
   const router = useRouter();
 
-  const { mutate: checkout } = useMutation({
+  const { mutate: checkout, isLoading } = useMutation({
     mutationFn: async () => {
       const payload = {
         screeningId: selectedScreeningId,
@@ -34,25 +35,23 @@ const BookDetail = ({ movie }: { movie: BookDetailProps }) => {
       const { data } = await axiosInstance.post("/booking", payload);
     },
     onSuccess: () => {
-      
-      // router.push('/user/order-history')
+      router.push("/user/order-history");
       return toast({
         title: "Success!",
-        description: "Checkout Success"
-      })
+        description: "Checkout Success",
+      });
     },
     onError: (err: AxiosError) => {
       return toast({
         title: "Something went wrong!",
         description: `${err.response?.data}`,
-        variant: 'destructive'
-      })
+        variant: "destructive",
+      });
     },
   });
 
   const handleCheckout = () => {
     if (selectedSeatsId.length === 0 || selectedScreeningId === "") {
-
       return toast({
         title: "Error",
         description: "Fill all the required fields to continue!",
@@ -114,7 +113,7 @@ const BookDetail = ({ movie }: { movie: BookDetailProps }) => {
           <span>Rp.{selectedSeatsId.length * movie.ticket_price}</span>
         </div>
         <Button onClick={() => handleCheckout()} className="w-full">
-          Checkout
+          {isLoading ? <Loader2 className="animate-spin" /> : "Checkout"}
         </Button>
       </div>
     </div>

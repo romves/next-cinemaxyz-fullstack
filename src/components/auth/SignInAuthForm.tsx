@@ -9,6 +9,7 @@ import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { axiosInstance } from "@/lib/axios";
 import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
 
 type SignInFormType = {
   username: string;
@@ -24,7 +25,7 @@ const SignInAuthForm = () => {
     password: "",
   });
 
-  const { mutate: signin } = useMutation({
+  const { mutate: signin, isLoading } = useMutation({
     mutationFn: async () => {
       const payload = {
         username: formDetails.username,
@@ -45,7 +46,7 @@ const SignInAuthForm = () => {
       toast({
         title: "Error",
         description: "Login error please try again later",
-        variant: "destructive"
+        variant: "destructive",
       });
     },
   });
@@ -77,7 +78,7 @@ const SignInAuthForm = () => {
         className="input input-bordered"
       />
       <Button onClick={() => signin()} className="btn btn-primary">
-        Sign In
+        {isLoading ? <Loader2 className="animate-spin" /> : "Sign In"}
       </Button>
     </div>
   );

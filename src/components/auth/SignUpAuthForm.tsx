@@ -8,6 +8,7 @@ import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { axiosInstance } from "@/lib/axios";
 import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
 
 type SignUpFormType = {
   username: string;
@@ -26,7 +27,7 @@ const SignUpAuthForm = () => {
     age: 0,
   });
 
-  const { mutate: signup } = useMutation({
+  const { mutate: signup, isLoading } = useMutation({
     mutationFn: async () => {
       const payload = {
         username: formDetails.username,
@@ -37,19 +38,19 @@ const SignUpAuthForm = () => {
       const { data } = await axiosInstance.post("/sign-up", payload);
       return data as string;
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast({
         title: "Success",
-        description: "Signup success"
-      })
+        description: "Signup success",
+      });
       router.back();
     },
-    onError: (err) => {
+    onError: () => {
       toast({
         title: "Error",
         description: "Signup error please try again later",
-        variant: "destructive"
-      })
+        variant: "destructive",
+      });
     },
   });
 
@@ -104,7 +105,7 @@ const SignUpAuthForm = () => {
         className="input input-bordered"
       />
       <Button onClick={() => signup()} className="btn btn-primary">
-        Sign Up
+        {isLoading ? <Loader2 className="animate-spin" /> : "Sign Up"}
       </Button>
     </div>
   );

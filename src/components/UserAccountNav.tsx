@@ -14,14 +14,15 @@ import {
   DropdownMenuItem,
 } from "./ui/dropdown-menu";
 import { useLayoutEffect, useState } from "react";
+import { Loader2 } from "lucide-react";
 
 const UserAccountNav = () => {
   const router = useRouter();
   const { logoutHandler } = useAuthStore((state) => state);
-  const [balance, setBalance] = useState(0)
+  const [balance, setBalance] = useState(0);
   const { data: session } = useFetchSession();
 
-  const { mutate: logout } = useMutation({
+  const { mutate: logout, isLoading } = useMutation({
     mutationFn: async () => {
       const res = axiosInstance.post("/sign-out");
 
@@ -36,9 +37,9 @@ const UserAccountNav = () => {
     },
   });
 
-  useLayoutEffect(() => {
-    setBalance(session?.balance!)
-  }, [session?.balance])
+  // useLayoutEffect(() => {
+  //   setBalance(session?.balance!);
+  // }, [session?.balance]);
 
   return (
     <div>
@@ -53,14 +54,14 @@ const UserAccountNav = () => {
               <Link href={`/user/${session.username}`}>Profile</Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href={"/user/topup"}>Rp.{balance}</Link>
+              <Link href={"/user/topup"}>Rp.{session.balance}</Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Link href={"/user/order-history"}>Order History</Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Button onClick={() => logout()} className="btn btn-sm">
-                Log Out
+                {isLoading ? <Loader2 className="animate-spin" /> : "Log Out"}
               </Button>
             </DropdownMenuItem>
           </DropdownMenuContent>

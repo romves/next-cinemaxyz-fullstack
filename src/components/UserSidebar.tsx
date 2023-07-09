@@ -8,13 +8,14 @@ import { useMutation } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/axios";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 const UserSidebar = () => {
-  const router = useRouter()
+  const router = useRouter();
   const { logoutHandler } = useAuthStore((state) => state);
   const { data: session } = useFetchSession();
 
-  const { mutate: logout } = useMutation({
+  const { mutate: logout, isLoading } = useMutation({
     mutationFn: async () => {
       const res = axiosInstance.post("/sign-out");
 
@@ -51,7 +52,7 @@ const UserSidebar = () => {
           </li>
           <li>
             <Button onClick={() => logout()} className="w-full">
-              Log Out
+              {isLoading ? <Loader2 className="animate-spin" /> : "Log Out"}
             </Button>
           </li>
         </ul>

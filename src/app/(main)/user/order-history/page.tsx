@@ -39,12 +39,21 @@ const Page = () => {
     queryKey: ["order-history"],
   });
 
-  if (isLoading) return <Loader2 className="animate-spin" />;
-
-  if (orderHistory == undefined) return <div>No Orders</div>;
-
   return (
     <UserInfoLayout className=" flex flex-col gap-2 p-2">
+
+      {isLoading && (
+        <div className="flex items-center justify-center w-full my-auto">
+          <Loader2 className="animate-spin" />
+        </div>
+      )}
+
+      {!isLoading && orderHistory == undefined || orderHistory?.length === 0 &&  (
+        <div className="flex items-center justify-center w-full">
+          No Orders
+        </div>
+      )}
+
       {orderHistory?.map((order) => (
         <div
           className="flex flex-col border h-fit p-2 rounded-lg"

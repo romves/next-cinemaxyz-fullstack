@@ -28,16 +28,22 @@ export async function POST(request: Request) {
       return new Response("Invalid input", { status: 400 });
     }
 
-    const movie = await db.movie.findUnique({
-      where: { id: parseInt(movieId) },
-    });
-    const screening = await db.screening.findUnique({
-      where: { id: parseInt(screeningId) },
-      include: { movie: true },
-    });
-    const user = await db.user.findUnique({
-      where: { id: parseInt(userId) },
-    });
+    // const movie = await db.movie.findUnique({
+    //   where: { id: parsedMovieId },
+    // });
+    // const screening = await db.screening.findUnique({
+    //   where: { id: parsedScreeningId },
+    //   include: { movie: true },
+    // });
+    // const user = await db.user.findUnique({
+    //   where: { id: parsedUserId },
+    // });
+
+    const [movie, screening, user] = await Promise.all([
+      db.movie.findUnique({ where: { id: parsedMovieId } }),
+      db.screening.findUnique({ where: { id: parsedScreeningId }, include: { movie: true } }),
+      db.user.findUnique({ where: { id: parsedUserId } })
+    ]);
 
     if (!user) {
       return new Response("User not found", { status: 404 });
@@ -51,7 +57,7 @@ export async function POST(request: Request) {
         tickets: {
           some: {
             screening: {
-              id: parseInt(screeningId),
+              id: parsedScreeningId,
             },
           },
         },
@@ -77,11 +83,12 @@ export async function POST(request: Request) {
       return new Response("Some seats are not available", { status: 404 });
     }
 
+    
     const createdSeats = await Promise.all(
       seatNumberArray.map((seatNumber) =>
         db.seat.create({
           data: {
-            seatNumber: seatNumber,
+            seatNumber: seatNumber + 1,
             studio: { connect: { id: screening.studioId } },
           },
         })
@@ -111,6 +118,7 @@ export async function POST(request: Request) {
     });
     return new Response(JSON.stringify(booking), { status: 200 });
   } catch (error) {
+    console.log(error);
     return new Response("Internal server error", { status: 500 });
   }
 }

@@ -1,4 +1,8 @@
+"use client";
+
+import withAuth from "@/components/hoc/withAuth";
 import UserSidebar from "@/components/UserSidebar";
+import { NextPage } from "next";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -9,4 +13,4 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default Layout;
+export default withAuth(Layout as NextPage);

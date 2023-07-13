@@ -3,23 +3,21 @@
 import { useFetchSession } from "@/lib/auth";
 import { axiosInstance } from "@/lib/axios";
 import { useAuthStore } from "@/store/authStore";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button, buttonVariants } from "./ui/Button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuTrigger,
   DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { useLayoutEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
 
 const UserAccountNav = () => {
   const router = useRouter();
   const { logoutHandler } = useAuthStore((state) => state);
-  const [balance, setBalance] = useState(0);
   const { data: session } = useFetchSession();
 
   const { mutate: logout, isLoading } = useMutation({

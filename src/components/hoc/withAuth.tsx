@@ -1,11 +1,12 @@
 "use client";
 
 import { useFetchSession } from "@/lib/auth";
-import { NextPage } from "next";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-const ProtectedRoute = (WrappedComponent: NextPage) => {
+const ProtectedRoute = (WrappedComponent: any) => {
+  // const { loginToast } = useCustomToast();
+
   const Wrapper = (props: any) => {
     const router = useRouter();
 
@@ -15,7 +16,7 @@ const ProtectedRoute = (WrappedComponent: NextPage) => {
     useEffect(() => {
       // Redirect to login if user is not authenticated
       if (!session) {
-        router.push("/");
+        router.replace("/sign-in");
       }
     }, [session, router]);
 
@@ -27,7 +28,6 @@ const ProtectedRoute = (WrappedComponent: NextPage) => {
     // Render the protected component if the user is authenticated
     return <WrappedComponent {...props} />;
   };
-
   return Wrapper;
 };
 

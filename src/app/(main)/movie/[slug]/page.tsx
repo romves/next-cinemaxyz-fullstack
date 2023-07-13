@@ -41,9 +41,9 @@ const Page = async ({ params }: PageProps) => {
           height={0}
         />
         <div className="flex flex-col gap-4">
-          <h2 className="text-4xl">{movie.title}</h2>
+          <h2 className="text-4xl font-bold">{movie.title}</h2>
           <p>{movie.description}</p>
-          <span>Usia {movie.age_rating} tahun</span>
+          <span>Age {movie.age_rating}+</span>
           <span>Release Date {movie.release_date.toLocaleDateString()}</span>
           <span>Rp.{movie.ticket_price}</span>
 

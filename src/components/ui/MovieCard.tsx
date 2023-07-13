@@ -3,11 +3,13 @@ import type { Movie } from "@prisma/client";
 import Link from "next/link";
 import Image from "next/image";
 
-const MovieCard = ({ movie }: { movie: Movie }) => {
+type VariantType = 'now-showing' | 'default';
+
+const MovieCard = ({ movie, variant = "default" }: { movie: Movie, variant?: VariantType }) => {
   return (
     <Link
       href={`/movie/${movie.id}`}
-      className="border max-w-[240px] min-w-[240px] h-[420px] rounded-lg overflow-hidden shadow-md"
+      className="relative border max-w-[240px] min-w-[240px] h-[420px] rounded-lg overflow-hidden shadow-md"
     >
       <div className="h-[350px]  overflow-hidden">
         <Image
@@ -17,7 +19,10 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
           height={100}
         />
       </div>
-      <h3 className="px-2 text-lg font-medium">{movie.title}</h3>
+
+      {variant === "now-showing" && <div className="absolute bg-red-600 h-6 top-0 right-0 text-white px-2 rounded-es-sm">Now Showing</div>}
+      
+      <h3 className="px-2 text-lg font-semibold">{movie.title}</h3>
     </Link>
   );
 };

@@ -28,17 +28,6 @@ export async function POST(request: Request) {
       return new Response("Invalid input", { status: 400 });
     }
 
-    // const movie = await db.movie.findUnique({
-    //   where: { id: parsedMovieId },
-    // });
-    // const screening = await db.screening.findUnique({
-    //   where: { id: parsedScreeningId },
-    //   include: { movie: true },
-    // });
-    // const user = await db.user.findUnique({
-    //   where: { id: parsedUserId },
-    // });
-
     const [movie, screening, user] = await Promise.all([
       db.movie.findUnique({ where: { id: parsedMovieId } }),
       db.screening.findUnique({ where: { id: parsedScreeningId }, include: { movie: true } }),

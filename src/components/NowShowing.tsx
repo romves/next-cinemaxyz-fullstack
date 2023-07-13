@@ -20,10 +20,13 @@ const NowShowing = () => {
   if (isLoading) {
     return <Loader2 className="animate-spin"/>;
   }
+
+  if (!movies || movies.length == 0) return <div>Movies not found</div>
+
   return (
     <div className="flex max-w-[100vw] gap-3 overflow-auto py-2">
       {movies?.map((movie: Movie) => (
-        <MovieCard key={movie.id} movie={movie} />
+        <MovieCard key={movie.id} movie={movie} variant="now-showing"/>
       ))}
     </div>
   );

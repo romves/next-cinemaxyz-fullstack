@@ -56,11 +56,11 @@ const Page = () => {
 
       {orderHistory?.map((order) => (
         <div
-          className="flex flex-col border h-fit p-2 rounded-lg"
+          className="flex flex-col border h-fit p-2 rounded-lg shadow-md"
           key={order.id}
         >
           <h3 className="font-bold">
-            Order ID: {order.id} | {order.checkoutDate.toLocaleString()}
+            Order ID: {order.id} | {new Date(order.checkoutDate).toLocaleString()}
           </h3>
           <ul className="space-y-2">
             {order.tickets.map((ticket) => (
@@ -76,7 +76,7 @@ const Page = () => {
                 <li className="flex flex-col">
                   <p>Movie: {ticket.movie.title}</p>
                   <p>At: {ticket.screening.studio.name}</p>
-                  <p>Date: {ticket.screening.start_time.toLocaleString()}</p>
+                  <p>Show time: {new Date(ticket.screening.start_time).toLocaleString()}</p>
                   <p>Seat Number: {ticket.seat.seatNumber}</p>
                 </li>
               </div>

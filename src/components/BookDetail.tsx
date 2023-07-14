@@ -95,7 +95,7 @@ const BookDetail = ({ movie }: { movie: BookDetailProps }) => {
             {movie?.screenings.map((screening) => (
               <SelectItem key={screening.id} value={`${screening.id}`}>
                 {screening.studio.name} |{" "}
-                {screening.start_time.toLocaleString()}
+                {new Date(screening.start_time).toLocaleString()}
               </SelectItem>
             ))}
           </SelectContent>

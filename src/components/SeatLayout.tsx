@@ -69,19 +69,19 @@ const SeatLayout = ({
               <div
                 key={index}
                 className={`${
-                  bookedSeats.includes(index)
+                  bookedSeats.includes(index + 1)
                     ? "cursor-not-allowed"
                     : "cursor-pointer"
                 } border shadow-sm sm:h-12 sm:w-12 text-xs sm:text-base w-7 h-7 rounded-lg flex items-center justify-center ${
-                  bookedSeats.includes(index) ? "sold" : "hover:bg-neutral-200"
+                  bookedSeats.includes(index + 1) ? "sold" : "hover:bg-neutral-200"
                 } ${
-                  selectedSeatsId.includes(index)
+                  selectedSeatsId.includes(index + 1)
                     ? "bg-blue-500 text-white"
                     : ""
                 }`}
-                onClick={() => handleSeatClick(index)}
+                onClick={() => handleSeatClick(index + 1)}
               >
-                {bookedSeats.includes(index) ? "sold" : index + 1}
+                {bookedSeats.includes(index + 1) ? "sold" : index + 1}
               </div>
             ))}
           </div>

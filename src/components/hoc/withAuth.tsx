@@ -11,16 +11,16 @@ const ProtectedRoute = (WrappedComponent: any) => {
     const router = useRouter();
 
     // Check if user is authenticated
-    const { data: session } = useFetchSession();
+    const { data: session, isLoading } = useFetchSession();
 
     useEffect(() => {
       // Redirect to login if user is not authenticated
-      if (!session) {
+      if (!session && !isLoading) {
         router.replace("/sign-in");
       }
-    }, [session, router]);
+    }, [session, router, isLoading]);
 
-    if (!session) {
+    if (isLoading) {
       // You can show a loading state or a message here
       return <div>Loading...</div>;
     }

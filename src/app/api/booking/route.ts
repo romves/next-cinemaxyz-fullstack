@@ -28,21 +28,10 @@ export async function POST(request: Request) {
       return new Response("Invalid input", { status: 400 });
     }
 
-    // const movie = await db.movie.findUnique({
-    //   where: { id: parsedMovieId },
-    // });
-    // const screening = await db.screening.findUnique({
-    //   where: { id: parsedScreeningId },
-    //   include: { movie: true },
-    // });
-    // const user = await db.user.findUnique({
-    //   where: { id: parsedUserId },
-    // });
-
     const [movie, screening, user] = await Promise.all([
       db.movie.findUnique({ where: { id: parsedMovieId } }),
-      db.screening.findUnique({ where: { id: parsedScreeningId }, include: { movie: true } }),
-      db.user.findUnique({ where: { id: parsedUserId } })
+      db.screening.findUnique({ where: { id: parsedScreeningId } }),
+      db.user.findUnique({ where: { id: parsedUserId } }),
     ]);
 
     if (!user) {
@@ -83,17 +72,18 @@ export async function POST(request: Request) {
       return new Response("Some seats are not available", { status: 404 });
     }
 
-    
-    const createdSeats = await Promise.all(
-      seatNumberArray.map((seatNumber) =>
-        db.seat.create({
-          data: {
-            seatNumber: seatNumber + 1,
-            studio: { connect: { id: screening.studioId } },
-          },
-        })
-      )
-    );
+    const createdSeats = [];
+
+    for (const seatNumber of seatNumberArray) {
+      const createdSeat = await db.seat.create({
+        data: {
+          seatNumber: seatNumber,
+          studio: { connect: { id: screening.studioId } },
+        },
+      });
+
+      createdSeats.push(createdSeat);
+    }
 
     const booking = await db.booking.create({
       data: {
@@ -107,15 +97,13 @@ export async function POST(request: Request) {
           })),
         },
       },
-      include: {
-        tickets: { include: { seat: true, movie: true, screening: true } },
-      },
     });
 
     await db.user.update({
       where: { id: user.id },
       data: { balance: user.balance - totalPrice },
     });
+    
     return new Response(JSON.stringify(booking), { status: 200 });
   } catch (error) {
     console.log(error);

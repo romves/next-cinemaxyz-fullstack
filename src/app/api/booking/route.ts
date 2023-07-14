@@ -96,6 +96,7 @@ export async function POST(request: Request) {
             user: { connect: { id: user.id } },
           })),
         },
+        totalBooking: totalPrice,
       },
     });
 
@@ -103,8 +104,76 @@ export async function POST(request: Request) {
       where: { id: user.id },
       data: { balance: user.balance - totalPrice },
     });
-    
+
     return new Response(JSON.stringify(booking), { status: 200 });
+  } catch (error) {
+    console.log(error);
+    return new Response("Internal server error", { status: 500 });
+  }
+}
+
+export async function PATCH(request: Request) {
+  const { data } = await request.json()
+  const bookingId = data.bookingId
+  const userId = request.headers.get("userid");
+
+  try {
+    if (!userId) {
+      return new Response("User not found", { status: 404 });
+    }
+
+    const parsedBookingId = parseInt(bookingId);
+    const parsedUserId = parseInt(userId);
+
+    const user = await db.user.findUnique({ where: { id: parsedUserId } })
+
+    if (!user) {
+      return new Response("User not found", { status: 404 });
+    }
+
+    if (isNaN(parsedBookingId) || isNaN(parsedUserId)) {
+      return new Response("Invalid input", { status: 400 });
+    }
+
+    const booking = await db.booking.findUnique({
+      where: { id: parsedBookingId },
+      include: { tickets: { include: { seat: true } } },
+    });
+
+    if (!booking) {
+      return new Response("Booking not found", { status: 404 });
+    }
+
+    if (booking.userId !== parsedUserId) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+
+    const ticketIds = booking.tickets.map((ticket) => ticket.id);
+    const seatIds = booking.tickets.map((ticket) => ticket.seat.id);
+
+    const screening = await db.screening.findUnique({ where: { id: booking.tickets[0].screeningId } });
+
+    if (!screening) {
+      return new Response('Screening not found', { status: 404 });
+    }
+
+    const currentDateTime = new Date();
+    const screeningDateTime = new Date(screening.start_time);
+    
+    if (screeningDateTime <= currentDateTime) {
+      return new Response('Movie is already showing', { status: 400 });
+    }
+
+    await db.booking.delete({ where: { id: parsedBookingId } });
+    await db.ticket.deleteMany({ where: { id: { in: ticketIds } } });
+    await db.seat.deleteMany({ where: { id: { in: seatIds } } });
+
+    await db.user.update({
+      where: { id: user.id },
+      data: { balance: user.balance + booking.totalBooking },
+    });
+
+    return new Response("Booking canceled successfully", { status: 200 });
   } catch (error) {
     console.log(error);
     return new Response("Internal server error", { status: 500 });

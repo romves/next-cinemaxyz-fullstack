@@ -47,8 +47,6 @@ const Page = async ({ params }: PageProps) => {
           <span>Release Date {movie.release_date.toLocaleDateString()}</span>
           <span>Rp.{movie.ticket_price}</span>
 
-          {/* TODO Check Session and Age before directing to next step */}
-
           <TicketBookButton movie={movie} />
         </div>
       </div>

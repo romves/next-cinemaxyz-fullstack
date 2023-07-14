@@ -65,7 +65,7 @@ const BookDetail = ({ movie }: { movie: BookDetailProps }) => {
       return;
     }
     if (session.balance < total) {
-      router.push("/user/topup");
+      router.push("/user/balance");
       return toast({
         title: "Something went wrong",
         description: "Insufficient balance!!!",

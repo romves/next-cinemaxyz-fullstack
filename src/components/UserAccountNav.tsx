@@ -35,10 +35,6 @@ const UserAccountNav = () => {
     },
   });
 
-  // useLayoutEffect(() => {
-  //   setBalance(session?.balance!);
-  // }, [session?.balance]);
-
   return (
     <div>
       {session ? (
@@ -52,7 +48,7 @@ const UserAccountNav = () => {
               <Link href={`/user/${session.username}`}>Profile</Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href={"/user/topup"}>Rp.{session.balance}</Link>
+              <Link href={"/user/balance"}>Rp.{session.balance}</Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Link href={"/user/order-history"}>Order History</Link>

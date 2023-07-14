@@ -17,6 +17,11 @@ const Page = () => {
   const [amount, setAmount] = useState<number>(0);
   const [actionType, setActionType] = useState("");
 
+  const openModal = (action: string) => {
+    setShowModal(true);
+    setActionType(action);
+  };
+
   const handleTopUp = () => {
     if (amount == 0) return;
 
@@ -24,7 +29,7 @@ const Page = () => {
       .post("/user/topup", {
         topupAmount: amount,
       })
-      .then((res) => {
+      .then(() => {
         return toast({
           title: "Topup Success",
           description: `Topup with amount of ${amount} is success`,
@@ -44,17 +49,39 @@ const Page = () => {
   };
 
   const handleWithdraw = () => {
-    // Implement the logic for withdrawal here
-    // Example: Make an API request to your backend to subtract funds from the user's balance
-    // After the withdrawal is successful, update the balance state accordingly
-    setBalance(balance - amount!); // Replace "amount" with the actual withdrawal amount
+    if (amount == 0) return;
+
+    try {
+      if (amount <= 500000) throw Error("Min withdraw is Rp.500000");
+      
+      axiosInstance
+        .post("/user/withdraw", {
+          withdrawAmount: amount,
+        })
+        .then(() => {
+          return toast({
+            title: "Withdraw Success",
+            description: `Withdraw with amount of ${amount} is success`,
+            variant: "default",
+          });
+        })
+        .catch((error) =>
+          toast({
+            title: "Something went wrong",
+            description: error,
+            variant: "destructive",
+          })
+        );
+    } catch (error: any) {
+      toast({
+        title: "Something went wrong",
+        description: error.message,
+        variant: "destructive",
+      })
+    }
+
     setAmount(0);
     setShowModal(false);
-  };
-
-  const openModal = (action: string) => {
-    setShowModal(true);
-    setActionType(action);
   };
 
   useLayoutEffect(() => {
@@ -77,6 +104,7 @@ const Page = () => {
         <div className="fixed inset-0 bg-zinc-900/20 z-10">
           <div className="container flex items-center justify-center h-full max-w-lg mx-auto">
             <div className="relative flex flex-col items-center gap-2 bg-white w-fit h-fit py-16 px-8 rounded-lg">
+              {actionType === "withdraw" && <h3 className="font-bold text-red-500">Minimum withdraw is Rp.500000</h3>}
               <h3>Enter Amount {actionType}</h3>
               <Input
                 min={0}

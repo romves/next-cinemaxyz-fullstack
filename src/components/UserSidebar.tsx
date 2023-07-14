@@ -42,7 +42,7 @@ const UserSidebar = () => {
             <Link href={`/user/${session?.username}`}>My Profile</Link>
           </li>
           <li className="py-1">
-            <Link href="/user/topup" className="flex justify-between">
+            <Link href="/user/balance" className="flex justify-between">
               <span>Balance</span>
               <span>Rp.{session?.balance}</span>
             </Link>

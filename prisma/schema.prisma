@@ -86,6 +86,6 @@ model Booking {
   user         User     @relation(fields: [userId], references: [id])
   userId       Int
   tickets      Ticket[]
-  cancellation Boolean  @default(false)
   checkoutDate DateTime @default(now())
+  totalBooking Int
 }

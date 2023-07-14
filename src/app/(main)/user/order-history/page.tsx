@@ -2,6 +2,7 @@
 
 import UserInfoLayout from "@/components/UserInfoLayout";
 import { Button } from "@/components/ui/Button";
+import { useToast } from "@/hooks/use-toast";
 import { axiosInstance } from "@/lib/axios";
 import {
   Booking,
@@ -12,6 +13,7 @@ import {
   Ticket,
 } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 
@@ -30,6 +32,8 @@ interface OrderHistoryType extends Booking {
 }
 
 const Page = () => {
+  const { toast } = useToast();
+
   const { data: orderHistory, isLoading } = useQuery({
     queryFn: async () => {
       const response = await axiosInstance.get("/user/order-history");
@@ -39,20 +43,41 @@ const Page = () => {
     queryKey: ["order-history"],
   });
 
+  const handleCancelOrder = (id: number) => {
+    axios
+      .patch("/api/booking", {
+        data: { bookingId: id },
+      })
+      .then(() => {
+        return toast({
+          title: "Cancel order success",
+          description: `Your balance has been refunded`,
+          variant: "default",
+        });
+      })
+      .catch((error) =>
+        toast({
+          title: "Something went wrong",
+          description: error.message,
+          variant: "destructive",
+        })
+      );
+  };
+
   return (
     <UserInfoLayout className=" flex flex-col gap-2 p-2">
-
       {isLoading && (
         <div className="flex items-center justify-center w-full my-auto">
           <Loader2 className="animate-spin" />
         </div>
       )}
 
-      {!isLoading && orderHistory == undefined || orderHistory?.length === 0 &&  (
-        <div className="flex items-center justify-center w-full">
-          No Orders
-        </div>
-      )}
+      {(!isLoading && orderHistory == undefined) ||
+        (orderHistory?.length === 0 && (
+          <div className="flex items-center justify-center w-full">
+            No Orders
+          </div>
+        ))}
 
       {orderHistory?.map((order) => (
         <div
@@ -60,7 +85,8 @@ const Page = () => {
           key={order.id}
         >
           <h3 className="font-bold">
-            Order ID: {order.id} | {new Date(order.checkoutDate).toLocaleString()}
+            Order ID: {order.id} |{" "}
+            {new Date(order.checkoutDate).toLocaleString()}
           </h3>
           <ul className="space-y-2">
             {order.tickets.map((ticket) => (
@@ -76,12 +102,20 @@ const Page = () => {
                 <li className="flex flex-col">
                   <p>Movie: {ticket.movie.title}</p>
                   <p>At: {ticket.screening.studio.name}</p>
-                  <p>Show time: {new Date(ticket.screening.start_time).toLocaleString()}</p>
+                  <p>
+                    Show time:{" "}
+                    {new Date(ticket.screening.start_time).toLocaleString()}
+                  </p>
                   <p>Seat Number: {ticket.seat.seatNumber}</p>
                 </li>
               </div>
             ))}
-            <Button className="mt-auto w-fit">Cancel Order</Button>
+            <Button
+              className="mt-auto w-fit"
+              onClick={() => handleCancelOrder(order.id)}
+            >
+              Cancel Order
+            </Button>
           </ul>
         </div>
       ))}

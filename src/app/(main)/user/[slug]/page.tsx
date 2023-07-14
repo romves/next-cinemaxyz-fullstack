@@ -3,28 +3,55 @@
 import UserInfoLayout from "@/components/UserInfoLayout";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { useToast } from "@/hooks/use-toast";
 import { useFetchSession } from "@/lib/auth";
+import { axiosInstance } from "@/lib/axios";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
 const Page = () => {
+  const { toast } = useToast();
   const { data: session } = useFetchSession();
   const [isEditing, setIsEditing] = useState(false);
-  const [name, setName] = useState(session?.fullname || "");
   const [profileDetails, setProfileDetails] = useState({
-    // username: "",
-    // name: "",
-    // age: 0,
-  })
+    name: "",
+    age: 0,
+  });
+
+  const { mutate: updateUser, isLoading } = useMutation({
+    mutationFn: async () => {
+      axiosInstance.patch("user/me", {
+        data: profileDetails,
+      });
+    },
+    onSuccess: () => {
+      return toast({
+        title: "Edit success",
+        description: "Your details is successfully updated",
+        variant: "default",
+      });
+    },
+    onError: (error: any) => {
+      return toast({
+        title: "Something went wrong",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
 
   const handleSave = () => {
-    // Implement the logic to save the updated user profile
-    // Example: Make an API request to update the user's profile information
-    // After the update is successful, you can handle any necessary state changes or notifications
-    setIsEditing(false);
-  };
+    if (profileDetails.name === "" || profileDetails.age === 0) {
+      return toast({
+        title: "Something went wrong",
+        description: "Fill all the fields",
+        variant: "destructive",
+      });
+    }
 
-  const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
+    updateUser();
+
+    setIsEditing(false);
   };
 
   return (
@@ -38,7 +65,7 @@ const Page = () => {
           <div>
             Username:{" "}
             <Input
-              placeholder="Name"
+              placeholder="Username"
               disabled
               className="input input-sm border-neutral-400"
               type="text"
@@ -48,7 +75,7 @@ const Page = () => {
           <div>
             Name:{" "}
             <Input
-              placeholder="Name"
+              placeholder="Fullname"
               disabled
               className="input input-sm border-neutral-400"
               type="text"
@@ -58,10 +85,10 @@ const Page = () => {
           <div>
             Age:{" "}
             <Input
-              placeholder="Name"
+              placeholder="Age"
               disabled
               className="input input-sm border-neutral-400"
-              type="text"
+              type="number"
               value={session?.age || 0}
             />
           </div>
@@ -79,31 +106,41 @@ const Page = () => {
           <div>
             Username:{" "}
             <Input
-              placeholder="Name"
+              disabled
+              placeholder="Username"
               className="input input-sm border-neutral-400"
               type="text"
               value={session?.username || ""}
-              onChange={(e) => setProfileDetails(e.target.value)}
             />
           </div>
           <div>
             Name:{" "}
             <Input
-              placeholder="Name"
+              placeholder="Input your new fullname"
               className="input input-sm border-neutral-400"
               type="text"
-              value={session?.fullname || ""}
-              onChange={(e) => setProfileDetails(e.target.value)}
+              value={profileDetails.name}
+              onChange={(e) =>
+                setProfileDetails((prevProfileDetails) => ({
+                  ...prevProfileDetails,
+                  name: e.target.value,
+                }))
+              }
             />
           </div>
           <div>
             Age:{" "}
             <Input
-              placeholder="Name"
+              placeholder="Input your new age"
               className="input input-sm border-neutral-400"
-              type="text"
-              value={session?.age || 0}
-              onChange={(e) => setProfileDetails(e.target.value)}
+              type="number"
+              value={profileDetails.age}
+              onChange={(e) =>
+                setProfileDetails((prevProfileDetails) => ({
+                  ...prevProfileDetails,
+                  age: parseInt(e.target.value),
+                }))
+              }
             />
           </div>
           <div className="space-x-2">

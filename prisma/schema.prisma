@@ -63,7 +63,7 @@ model User {
   fullname String
   username String    @unique
   password String
-  age      Int // Add the age field
+  age      Int
   balance  Float     @default(0)
   tickets  Ticket[]
   bookings Booking[]

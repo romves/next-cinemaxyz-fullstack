@@ -39,17 +39,6 @@ export async function POST(request: Request) {
       maxAge: exp,
     };
 
-    // const data = {
-    //   user: {
-    //     id: user.id,
-    //     fullname: user.fullname,
-    //     age: user.age,
-    //     balance: user.balance,
-    //     username,
-    //   },
-    //   token,
-    // };
-
     const response = new NextResponse(
       JSON.stringify({
         status: "success",

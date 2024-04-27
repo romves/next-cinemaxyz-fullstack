@@ -43,7 +43,7 @@ const TicketBookButton = ({ movie }: { movie: TicketBookButtonProps }) => {
 
   return (
     <Button onClick={handleBook} className="btn btn-primary self-start">
-      Beli Tiket
+      Book Ticket
     </Button>
   );
 };

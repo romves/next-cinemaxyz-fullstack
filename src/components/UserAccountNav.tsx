@@ -14,6 +14,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { currencyFormatter } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/Avatar";
 
 const UserAccountNav = () => {
   const router = useRouter();
@@ -40,7 +42,10 @@ const UserAccountNav = () => {
       {session ? (
         <DropdownMenu>
           <DropdownMenuTrigger className="rounded-full">
-            <div className="bg-white border w-10 h-10 rounded-full" />
+            <Avatar>
+              <AvatarImage src="s" alt="@shadcn" />
+              <AvatarFallback>{session.fullname.split(" ").map((i) => i.charAt(0).toUpperCase())}</AvatarFallback>
+            </Avatar>
           </DropdownMenuTrigger>
 
           <DropdownMenuContent className="flex flex-col items-center justify-center">
@@ -48,7 +53,9 @@ const UserAccountNav = () => {
               <Link href={`/user/${session.username}`}>Profile</Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link href={"/user/balance"}>Rp.{session.balance}</Link>
+              <Link href={"/user/balance"}>
+                {currencyFormatter(session.balance)}
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Link href={"/user/order-history"}>Order History</Link>

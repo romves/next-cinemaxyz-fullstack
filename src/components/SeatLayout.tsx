@@ -4,11 +4,12 @@ import { useToast } from "@/hooks/use-toast";
 import { axiosInstance } from "@/lib/axios";
 import { Loader2 } from "lucide-react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { X } from "lucide-react";
 
 interface SeatLayoutProps {
   screeningId: string;
   selectedSeatsId: number[];
-  setSelectedSeatsId: Dispatch<SetStateAction<number[]>>;
+  setSelectedSeatsId: (x: number[]) => void;
 }
 
 const SeatLayout = ({
@@ -39,7 +40,7 @@ const SeatLayout = ({
 
   const handleSeatClick = (seatIndex: number) => {
     if (bookedSeats.includes(seatIndex)) {
-      return; // Seat is already booked, do not allow selection
+      return;
     }
     if (selectedSeatsId.includes(seatIndex)) {
       setSelectedSeatsId(selectedSeatsId.filter((seat) => seat !== seatIndex));
@@ -69,19 +70,16 @@ const SeatLayout = ({
               <div
                 key={index}
                 className={`${
-                  bookedSeats.includes(index + 1)
-                    ? "cursor-not-allowed"
-                    : "cursor-pointer"
-                } border shadow-sm sm:h-12 sm:w-12 text-xs sm:text-base w-7 h-7 rounded-lg flex items-center justify-center ${
-                  bookedSeats.includes(index + 1) ? "sold" : "hover:bg-neutral-200"
+                  selectedSeatsId.includes(index + 1) &&
+                  "bg-green-400 text-white hover:bg-green-500"
                 } ${
-                  selectedSeatsId.includes(index + 1)
-                    ? "bg-blue-500 text-white"
-                    : ""
-                }`}
+                  bookedSeats.includes(index + 1)
+                    ? "cursor-not-allowed bg-red-400 text-white"
+                    : "cursor-pointer hover:bg-neutral-200"
+                } border shadow-sm sm:h-12 sm:w-12 text-xs sm:text-base w-7 h-7 rounded-lg flex items-center justify-center transition-colors duration-300`}
                 onClick={() => handleSeatClick(index + 1)}
               >
-                {bookedSeats.includes(index + 1) ? "sold" : index + 1}
+                {bookedSeats.includes(index + 1) ? <X /> : index + 1}
               </div>
             ))}
           </div>

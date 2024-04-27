@@ -28,8 +28,8 @@ export default function RootLayout({
 
           {authModal}
           <Toaster />
-
-          <div className=" max-w-screen">{children}</div>
+          
+          {children}
 
           <Footer />
         </Providers>

@@ -14,7 +14,7 @@ type SignUpFormType = {
   username: string;
   password: string;
   fullname: string;
-  age: number | undefined;
+  age: number | null;
 };
 
 const SignUpAuthForm = () => {
@@ -24,7 +24,7 @@ const SignUpAuthForm = () => {
     username: "",
     password: "",
     fullname: "",
-    age: 0,
+    age: null,
   });
 
   const { mutate: signup, isLoading } = useMutation({
@@ -95,7 +95,7 @@ const SignUpAuthForm = () => {
       <Input
         type="number"
         placeholder="Age"
-        value={formDetails.age!}
+        value={formDetails.age || ""}
         onChange={(e) =>
           setFormDetails((prevState) => ({
             ...prevState,

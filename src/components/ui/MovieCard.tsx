@@ -2,10 +2,17 @@ import React from "react";
 import type { Movie } from "@prisma/client";
 import Link from "next/link";
 import Image from "next/image";
+import { Badge } from "./badge";
 
-type VariantType = 'now-showing' | 'default';
+type VariantType = "now-showing" | "default";
 
-const MovieCard = ({ movie, variant = "default" }: { movie: Movie, variant?: VariantType }) => {
+const MovieCard = ({
+  movie,
+  variant = "default",
+}: {
+  movie: Movie;
+  variant?: VariantType;
+}) => {
   return (
     <Link
       href={`/movie/${movie.id}`}
@@ -20,8 +27,10 @@ const MovieCard = ({ movie, variant = "default" }: { movie: Movie, variant?: Var
         />
       </div>
 
-      {variant === "now-showing" && <div className="absolute bg-red-600 h-6 top-0 right-0 text-white px-2 rounded-es-sm">Now Showing</div>}
-      
+      {variant === "now-showing" && (
+        <Badge className="absolute top-2 right-2 bg-red-500">Now Showing</Badge>
+      )}
+
       <h3 className="px-2 text-lg font-semibold">{movie.title}</h3>
     </Link>
   );

@@ -1,10 +1,10 @@
 'use client'
 
-import BookDetail from "@/components/BookDetail";
 import { axiosInstance } from "@/lib/axios";
 import withAuth from '@/components/hoc/withAuth'
 import { useQuery } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
+import MovieBookDetail from "@/module/movie/MovieBookDetail";
 
 interface PageProps {
   params: {
@@ -29,13 +29,14 @@ const Page = ({ params }: PageProps) => {
     queryKey: [`movie-${movieId}`],
   });
 
-  if(isLoading) return <div>Loading..</div>
+  if(isLoading) return;
 
   return (
-    <div className="container lg:border lg:shadow-md rounded-lg py-8 my-4  space-y-4">
+    <section className="container py-8 my-4 space-y-8">
       <h2 className="font-bold text-3xl">Fill up the details</h2>
-      <BookDetail movie={movie!} />
-    </div>
+      {/* <BookDetail movie={movie!} /> */}
+      <MovieBookDetail movie={movie!} />
+    </section>
   );
 };
 

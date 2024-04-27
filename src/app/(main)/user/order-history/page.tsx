@@ -123,7 +123,7 @@ const Page = () => {
             </div>
             <Button
               className="mt-auto w-fit"
-              disabled={new Date(order.checkoutDate) < new Date()}
+              disabled={new Date(order.tickets[0].screening.start_time) < new Date()}
               onClick={() => handleCancelOrder(order.id)}
             >
               Cancel Order

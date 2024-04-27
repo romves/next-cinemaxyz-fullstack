@@ -1,9 +1,12 @@
+import { axiosInstance } from "@/lib/axios";
 import { Movie } from "@prisma/client";
+import React from "react";
 import MovieCard from "./ui/MovieCard";
+import { Loader2 } from "lucide-react";
+import { fetchMovies } from "@/service/movies";
 
 const NowShowing = async () => {
-  const res = await fetch("/api/movies/now-showing");
-  const movies = await res.json();
+  const { data: movies } = await fetchMovies();
 
   if (!movies || movies.length == 0) return <section>Movies not found</section>;
 

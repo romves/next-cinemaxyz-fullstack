@@ -1,6 +1,5 @@
 "use client";
 
-import CloseModal from "@/components/CloseModal";
 import UserInfoLayout from "@/components/UserInfoLayout";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -8,10 +7,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useFetchSession } from "@/lib/auth";
 import { axiosInstance } from "@/lib/axios";
 import React, { SyntheticEvent, useLayoutEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 const Page = () => {
-  const router = useRouter();
   const { data: session } = useFetchSession();
   const { toast } = useToast();
   const [showModal, setShowModal] = useState(false);

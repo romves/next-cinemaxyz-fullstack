@@ -4,7 +4,7 @@ import MovieCard from "./ui/MovieCard";
 const NowShowing = async () => {
   const res = await fetch(
     `${
-      process.env.NODE_ENV === "production" ? "/api" : "http://localhost:3000"
+      process.env.NODE_ENV === "production" ? "" : "http://localhost:3000"
     }/api/movies/now-showing`
   );
   const movies = await res.json();

@@ -2,7 +2,7 @@ import { Movie } from "@prisma/client";
 import MovieCard from "./ui/MovieCard";
 
 const NowShowing = async () => {
-  const res = await fetch("http://localhost:3000/api/movies/now-showing");
+  const res = await fetch("/api/movies/now-showing");
   const movies = await res.json();
 
   if (!movies || movies.length == 0) return <section>Movies not found</section>;

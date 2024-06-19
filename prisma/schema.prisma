@@ -20,6 +20,8 @@ model Movie {
   ticket_price Int
   screenings   Screening[] @relation("MovieScreening")
   Ticket       Ticket[]
+
+  @@map("movies")
 }
 
 model Studio {
@@ -27,35 +29,41 @@ model Studio {
   name       String
   seats      Seat[]
   screenings Screening[]
+
+  @@map("studios")
 }
 
 model Seat {
   id         Int         @id @default(autoincrement())
   seatNumber Int
-  studio     Studio      @relation(fields: [studioId], references: [id])
-  studioId   Int
+  studio     Studio      @relation(fields: [studio_id], references: [id])
+  studio_id   Int
   screenings Screening[]
   tickets    Ticket[]
 
-  @@index([studioId])
+  @@index([studio_id])
+
+  @@map("seats")
 }
 
 model Ticket {
   id          Int       @id @default(autoincrement())
   seat        Seat      @relation(fields: [seatId], references: [id])
   seatId      Int
-  movie       Movie     @relation(fields: [movieId], references: [id])
-  movieId     Int
-  user        User?     @relation(fields: [userId], references: [id])
-  userId      Int?
-  screening   Screening @relation(fields: [screeningId], references: [id])
-  screeningId Int
-  booking     Booking?  @relation(fields: [bookingId], references: [id])
-  bookingId   Int?
+  movie       Movie     @relation(fields: [movie_id], references: [id])
+  movie_id     Int
+  user        User?     @relation(fields: [user_id], references: [id])
+  user_id      Int?
+  screening   Screening @relation(fields: [screening_id], references: [id])
+  screening_id Int
+  booking     Booking?  @relation(fields: [booking_id], references: [id])
+  booking_id   Int?
 
-  @@index([movieId])
-  @@index([userId])
-  @@index([screeningId])
+  @@index([movie_id])
+  @@index([user_id])
+  @@index([screening_id])
+
+  @@map("tickets")
 }
 
 model User {
@@ -63,29 +71,35 @@ model User {
   fullname String
   username String    @unique
   password String
-  age      Int
+  age      Int // Add the age field
   balance  Float     @default(0)
   tickets  Ticket[]
   bookings Booking[]
   role     String?
+
+  @@map("users")
 }
 
 model Screening {
   id         Int      @id @default(autoincrement())
   start_time DateTime
-  movie      Movie    @relation("MovieScreening", fields: [movieId], references: [id])
-  movieId    Int
-  studio     Studio   @relation(fields: [studioId], references: [id])
-  studioId   Int
+  movie      Movie    @relation("MovieScreening", fields: [movie_id], references: [id])
+  movie_id    Int
+  studio     Studio   @relation(fields: [studio_id], references: [id])
+  studio_id   Int
   seats      Seat[]
   tickets    Ticket[]
+
+  @@map("screenings")
 }
 
 model Booking {
   id           Int      @id @default(autoincrement())
-  user         User     @relation(fields: [userId], references: [id])
-  userId       Int
+  user         User     @relation(fields: [user_id], references: [id])
+  user_id       Int
   tickets      Ticket[]
-  checkoutDate DateTime @default(now())
-  totalBooking Int
+  checkout_date DateTime @default(now())
+  total_booking Int
+
+  @@map("bookings")
 }

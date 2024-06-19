@@ -67,7 +67,7 @@ const Page = () => {
   };
 
   return (
-    <UserInfoLayout className=" flex flex-col gap-2 p-2">
+    <UserInfoLayout className="flex flex-col gap-2 p-2 ">
       {isLoading && (
         <div className="flex items-center justify-center w-full my-auto">
           <Loader2 className="animate-spin" />
@@ -83,12 +83,12 @@ const Page = () => {
 
       {orderHistory?.map((order) => (
         <div
-          className="flex flex-col border h-fit p-2 rounded-lg shadow-md gap-2"
+          className="flex flex-col gap-2 p-2 border rounded-lg shadow-md h-fit"
           key={order.id}
         >
-          <div className="grid font-semibold text-sm">
+          <div className="grid text-sm font-semibold">
             <span>
-              Checkout Date: {dateTimeFormatter(new Date(order.checkoutDate))}
+              Checkout Date: {dateTimeFormatter(new Date(order.checkout_date))}
             </span>
             <span>Order ID: {order.id}</span>
           </div>

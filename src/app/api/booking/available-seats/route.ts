@@ -16,7 +16,7 @@ export async function POST(request: Request) {
       where: {
         tickets: {
           some: {
-            screeningId: parseInt(screeningId),
+            screening_id: parseInt(screeningId),
           },
         },
       },

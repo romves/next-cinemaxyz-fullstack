@@ -78,7 +78,7 @@ export async function POST(request: Request) {
       const createdSeat = await db.seat.create({
         data: {
           seatNumber: seatNumber,
-          studio: { connect: { id: screening.studioId } },
+          studio: { connect: { id: screening.studio_id } },
         },
       });
 
@@ -96,7 +96,7 @@ export async function POST(request: Request) {
             user: { connect: { id: user.id } },
           })),
         },
-        totalBooking: totalPrice,
+        total_booking: totalPrice,
       },
     });
 
@@ -144,14 +144,14 @@ export async function PATCH(request: Request) {
       return new Response("Booking not found", { status: 404 });
     }
 
-    if (booking.userId !== parsedUserId) {
+    if (booking.user_id !== parsedUserId) {
       return new Response("Unauthorized", { status: 401 });
     }
 
     const ticketIds = booking.tickets.map((ticket) => ticket.id);
     const seatIds = booking.tickets.map((ticket) => ticket.seat.id);
 
-    const screening = await db.screening.findUnique({ where: { id: booking.tickets[0].screeningId } });
+    const screening = await db.screening.findUnique({ where: { id: booking.tickets[0].screening_id } });
 
     if (!screening) {
       return new Response('Screening not found', { status: 404 });
@@ -170,7 +170,7 @@ export async function PATCH(request: Request) {
 
     await db.user.update({
       where: { id: user.id },
-      data: { balance: user.balance + booking.totalBooking },
+      data: { balance: user.balance + booking.total_booking },
     });
 
     return new Response("Booking canceled successfully", { status: 200 });

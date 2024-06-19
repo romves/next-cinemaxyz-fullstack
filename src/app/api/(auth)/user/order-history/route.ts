@@ -8,7 +8,7 @@ export async function GET(request: Request) {
 
   try {
     const orderHistory = await db.booking.findMany({
-      where: { userId: parseInt(userId) },
+      where: { user_id: parseInt(userId) },
       include: {
         tickets: {
           include: {

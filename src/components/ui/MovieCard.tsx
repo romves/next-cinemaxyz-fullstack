@@ -16,22 +16,22 @@ const MovieCard = ({
   return (
     <Link
       href={`/movie/${movie.id}`}
-      className="relative border max-w-[240px] min-w-[240px] h-[420px] rounded-lg overflow-hidden shadow-md"
+      className="relative w-full mx-auto overflow-hidden border rounded-lg shadow-md"
     >
-      <div className="h-[350px]  overflow-hidden">
+      <div className="relative overflow-hidden h-[250px] md:h-[420px]">
         <Image
+          className="object-cover"
           src={movie.poster_url}
           alt={movie.title}
-          width={240}
-          height={100}
+          fill
         />
       </div>
 
       {variant === "now-showing" && (
-        <Badge className="absolute top-2 right-2 bg-red-500">Now Showing</Badge>
+        <Badge className="absolute bg-red-500 top-2 right-2">Now Showing</Badge>
       )}
 
-      <h3 className="px-2 text-lg font-semibold">{movie.title}</h3>
+      <h3 className="px-2 font-semibold md:text-lg text-md">{movie.title}</h3>
     </Link>
   );
 };

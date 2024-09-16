@@ -14,7 +14,7 @@ const Page = () => {
       <DialogContent
         closeHandler={() => router.back()}
         withClose
-        className="sm:max-w-md w-fit"
+        className="w-[90vw] md:w-fit"
       >
         <SignUp />
       </DialogContent>

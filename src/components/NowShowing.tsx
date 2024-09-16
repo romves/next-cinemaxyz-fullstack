@@ -16,7 +16,7 @@ const NowShowing = async () => {
         <section>
             <h1 className="text-4xl font-bold">Now Showing</h1>
             <div className="flex gap-3 py-2 overflow-auto">
-                {movies?.slice(0,1).map((movie: Movie) => (
+                {movies?.map((movie: Movie) => (
                     <MovieCard
                         key={movie.id}
                         movie={movie}

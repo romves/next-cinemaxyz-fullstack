@@ -1,5 +1,5 @@
-import { db } from "@/lib/db";
-import MovieDetails from "@/module/movie/MovieDetails";
+import { db } from "@/common/config/db";
+import MovieDetails from "@/features/movie-detail/presentation/ui/MovieDetails";
 import { notFound } from "next/navigation";
 
 interface PageProps {

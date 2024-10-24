@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { db } from "@/common/config/db";
 import { Booking, Ticket } from "@prisma/client";
 
 export async function GET(request: Request) {

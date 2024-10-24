@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { db } from "@/common/config/db";
 import bcrypt from "bcrypt"
 
 export async function POST(request: Request) {

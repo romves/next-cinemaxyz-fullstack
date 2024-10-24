@@ -1,4 +1,4 @@
-import SignUp from "@/components/auth/SignUp";
+import SignUp from "@/shared/components/auth/SignUp";
 import Link from "next/link";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

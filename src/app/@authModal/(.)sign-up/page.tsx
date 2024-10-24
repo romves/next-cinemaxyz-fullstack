@@ -1,8 +1,8 @@
 'use client'
 
 
-import SignUp from "@/components/auth/SignUp";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import SignUp from "@/shared/components/auth/SignUp";
+import { Dialog, DialogContent } from "@/shared/components/ui/dialog";
 import { useRouter } from "next/navigation";
 import React from "react";
 

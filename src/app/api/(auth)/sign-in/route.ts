@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { db } from "@/common/config/db";
 import bcrypt from "bcrypt";
 import { SignJWT } from "jose";
 import { NextResponse } from "next/server";

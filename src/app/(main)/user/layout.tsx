@@ -1,7 +1,7 @@
 "use client";
 
-import withAuth from "@/components/hoc/withAuth";
-import UserSidebar from "@/components/UserSidebar";
+import withAuth from "@/shared/components/hoc/withAuth";
+import UserSidebar from "@/shared/components/UserSidebar";
 import { NextPage } from "next";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {

@@ -1,12 +1,12 @@
 "use client";
 
-import SignIn from "@/components/auth/SignIn";
+import SignIn from "@/shared/components/auth/SignIn";
 import {
   Dialog,
   DialogClose,
   DialogContent,
   DialogHeader,
-} from "@/components/ui/dialog";
+} from "@/shared/components/ui/dialog";
 import { useRouter } from "next/navigation";
 
 const Page = () => {

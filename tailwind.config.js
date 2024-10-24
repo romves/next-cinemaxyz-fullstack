@@ -7,13 +7,6 @@ module.exports = {
     './src/**/*.{js,ts,jsx,tsx,mdx}',
 	],
   theme: {
-    container: {
-      center: true,
-      padding: {
-        DEFAULT: "1rem",
-        sm: "4rem",
-      },
-    },
     extend: {
       colors: {
         border: "hsl(var(--border))",

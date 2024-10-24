@@ -1,11 +1,11 @@
 "use client";
 
-import UserInfoLayout from "@/components/UserInfoLayout";
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { useToast } from "@/hooks/use-toast";
-import { useFetchSession } from "@/lib/auth";
-import { axiosInstance } from "@/lib/axios";
+import UserInfoLayout from "@/shared/components/UserInfoLayout";
+import { Button } from "@/shared/components/ui/Button";
+import { Input } from "@/shared/components/ui/Input";
+import { useToast } from "@/common/hooks/use-toast";
+import { useFetchSession } from "@/common/config/auth";
+import { axiosInstance } from "@/common/config/axios";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 

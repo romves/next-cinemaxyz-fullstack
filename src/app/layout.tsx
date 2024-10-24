@@ -1,10 +1,10 @@
-import Navbar from "@/components/Navbar";
+import Navbar from "@/shared/components/Navbar";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import Footer from "@/components/Footer";
-import Providers from "@/components/Providers";
+import Footer from "@/shared/components/Footer";
+import Providers from "@/shared/components/providers/Providers";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import { Toaster } from "@/components/ui/Toaster";
+import { Toaster } from "@/shared/components/ui/Toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 

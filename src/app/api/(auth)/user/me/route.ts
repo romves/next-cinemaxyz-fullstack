@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { db } from "@/common/config/db";
 
 export async function GET(request: Request) {
   const userId = request.headers.get("userid");

@@ -1,10 +1,10 @@
 "use client";
 
-import UserInfoLayout from "@/components/UserInfoLayout";
-import { Button } from "@/components/ui/Button";
-import { useToast } from "@/hooks/use-toast";
-import { axiosInstance } from "@/lib/axios";
-import { dateTimeFormatter } from "@/lib/utils";
+import UserInfoLayout from "@/shared/components/UserInfoLayout";
+import { Button } from "@/shared/components/ui/Button";
+import { useToast } from "@/common/hooks/use-toast";
+import { axiosInstance } from "@/common/config/axios";
+import { dateTimeFormatter } from "@/common/config/utils";
 import {
   Booking,
   Movie,

@@ -1,10 +1,10 @@
 'use client'
 
-import { axiosInstance } from "@/lib/axios";
-import withAuth from '@/components/hoc/withAuth'
+import { axiosInstance } from "@/common/config/axios";
+import withAuth from '@/shared/components/hoc/withAuth'
 import { useQuery } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
-import MovieBookDetail from "@/module/movie/MovieBookDetail";
+import MovieBookDetail from "@/features/movie-detail/presentation/ui/MovieBookDetail";
 
 interface PageProps {
   params: {

@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { db } from "@/common/config/db";
 
 export async function POST(request: Request) {
   const { movieId, studioId, startTime } = await request.json();
